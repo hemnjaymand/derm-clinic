@@ -1,0 +1,251 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String        @id @default(cuid())
+  name          String?
+  email         String        @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  role          Role          @default(ADMIN)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  accounts      Account[]
+  appointments  Appointment[]
+  sessions      Session[]
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Patient {
+  id           String        @id @default(cuid())
+  firstName    String
+  lastName     String
+  phone        String        @unique
+  nationalId   String?       @unique
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  appointments Appointment[]
+
+  @@index([phone])
+  @@map("patients")
+}
+
+model Service {
+  id           String        @id @default(cuid())
+  title        String
+  slug         String        @unique
+  description  String?
+  durationMin  Int
+  price        Int?
+  imageUrl     String?
+  isActive     Boolean       @default(true)
+  order        Int           @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  appointments Appointment[]
+
+  @@map("services")
+}
+
+model Appointment {
+  id          String            @id @default(cuid())
+  date        DateTime
+  startTime   String
+  endTime     String
+  status      AppointmentStatus @default(PENDING)
+  description String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  patientId   String
+  serviceId   String
+  userId      String
+  note        String?
+  patient     Patient           @relation(fields: [patientId], references: [id])
+  service     Service           @relation(fields: [serviceId], references: [id])
+  user        User              @relation(fields: [userId], references: [id])
+  smsLogs     SmsLog[]
+
+  @@index([patientId])
+  @@index([serviceId])
+  @@index([date])
+  @@map("appointments")
+}
+
+model Gallery {
+  id          String   @id @default(cuid())
+  title       String
+  image       String
+  description String?
+  category    String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("gallery")
+}
+
+model Blog {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  content     String
+  excerpt     String?
+  coverImage  String?
+  author      String?
+  publishedAt DateTime?
+  isPublished Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("blogs")
+}
+
+model WorkingHours {
+  id        String   @id @default(cuid())
+  dayOfWeek Int      @unique
+  isOpen    Boolean  @default(true)
+  openTime  String?
+  closeTime String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("working_hours")
+}
+
+model Holiday {
+  id        String   @id @default(cuid())
+  date      DateTime @unique
+  reason    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("holidays")
+}
+
+model Setting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("settings")
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  name         String
+  phone        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model SmsLog {
+  id            String       @id @default(cuid())
+  phone         String
+  type          SmsType
+  status        SmsStatus    @default(PENDING)
+  provider      String
+  appointmentId String?
+  errorMessage  String?
+  createdAt     DateTime     @default(now())
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+
+  @@map("sms_logs")
+}
+
+enum Role {
+  ADMIN
+  DOCTOR
+  RECEPTIONIST
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NOSHOW
+}
+
+enum DayOfWeek {
+  SATURDAY
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+}
+
+enum SmsType {
+  BOOKING
+  CONFIRM
+  CANCEL
+  REMINDER
+}
+
+enum SmsStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+
+
+model SiteSettings {
+  id                             String   @id @default(cuid())
+  latitude                       String?
+  longitude                      String?
+  mapZoom                        Int      @default(16)
+  consultationTitle              String?
+  consultationSubtitle           String?
+  consultationButtonText         String?
+  consultationBackgroundImage    String?
+  // سایر فیلدهای مورد نیاز...
+
+  createdAt                      DateTime @default(now())
+  updatedAt                      DateTime @updatedAt
+
+  @@map("site_settings")
+}
