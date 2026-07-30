@@ -1,38 +1,27 @@
 // app/page.tsx
 import { HeroSlider } from "@/components/layout";
-import { BrandsMarquee } from "@/components/layout/‌home-features/BrandsMarquee/BrandsMarquee";
-import { ConsultationForm } from "@/components/layout/‌home-features/Consultation/Consultation-Form";
-import { FeaturesSection } from "@/components/layout/‌home-features/FeaturesSection/Features-Section";
+import { BrandsMarquee } from "@/components/layout/HomeFeatures/BrandsMarquee/BrandsMarquee";
+import { ConsultationForm } from "@/components/layout/HomeFeatures/Consultation/Consultation-Form";
+import { FeaturesSection } from "@/components/layout/HomeFeatures/FeaturesSection/Features-Section";
+import { RecentPatients } from "@/components/layout/HomeFeatures/RecentPatients/Recent-Patients";
+import { ServiceDetailSection } from "@/components/layout/HomeFeatures/ServiceDetailSection/Service-Detail-Section";
 
-import { VideoTestimonials } from "@/components/layout/‌home-features/VideoTestimonials/VideoTestimonials";
-import { RecentPatients } from "@/components/layout/‌home-features/RecentPatients/Recent-Patients";
-import { ServiceDetailSection } from "@/components/layout/‌home-features/ServiceDetailSection/Service-Detail-Section";
+import { VideoTestimonials } from "@/components/layout/HomeFeatures/VideoTestimonials/VideoTestimonials";
+import { ServicesShowcase } from "@/components/layout/HomeFeatures/ServicesShowcase/ServicesShowcase";
 
 const Homepage = () => {
   return (
-    <main className="min-h-screen bg-background">
-      {/* =====  بنر اصلی (Hero) - بدون Container چون خودش full-width است ===== */}
+    <main className="min-h-screen">
       <HeroSlider />
+      <ServicesShowcase />
+      <VideoTestimonials />
+      <BrandsMarquee />
 
-      {/* =====  سایر بخش‌ها با فاصله‌گذاری یکنواخت ===== */}
-      <div className="container mx-auto px-4 space-y-20 md:space-y-28">
-        {/* جزئیات خدمات */}
-        <ServiceDetailSection/>
-
-        {/* ویژگی‌ها (What We Offer*/}
-         <FeaturesSection />
-
-        {/* نمونه‌های قبل و بعد */}
+      <div className="container mx-auto space-y-20 px-4 py-16 md:space-y-28 md:py-24">
+        <ServiceDetailSection />
+        <FeaturesSection />
         <RecentPatients />
-
-        {/* ویدئوهای تستیمونیال */}
-        <VideoTestimonials />
-
-        {/* برندهای معتبر */}
-        <BrandsMarquee />
-        {/* فرم مشاوره */}
-        <ConsultationForm /> 
-
+        <ConsultationForm />
       </div>
     </main>
   );

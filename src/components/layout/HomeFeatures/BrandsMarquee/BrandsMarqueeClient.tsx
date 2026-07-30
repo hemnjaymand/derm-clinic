@@ -34,11 +34,18 @@ export function BrandsMarqueeClient({ brands }: { brands: Brand[] }) {
 
   return (
     <div className="relative">
-      <h2 className="mb-8 text-center text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+      <h2 className="mb-8 font-bold text-center text-sm uppercase tracking-wider text-muted-foreground">
         برندهای معتبر
       </h2>
       <div className="overflow-hidden">
-        <div ref={scrollRef} className="animate-scroll flex w-max items-center gap-10 md:gap-16">
+        {/* 
+          تغییر کلیدی: اضافه شدن pe-10 md:pe-16 برای جبران فضای خالی گپ 
+          تا محاسبه ۵۰ درصد دقیقاً معادل یک ستِ کامل از برندها شود.
+        */}
+        <div 
+          ref={scrollRef} 
+          className="animate-scroll flex w-max items-center gap-10 pe-10 md:gap-16 md:pe-16"
+        >
           {doubledBrands.map((brand, index) => (
             <div
               key={`${brand.id}-${index}`}
@@ -66,11 +73,13 @@ export function BrandsMarqueeClient({ brands }: { brands: Brand[] }) {
 
       <style jsx>{`
         @keyframes scroll {
+          /* در سایت راست‌چین، ۵۰ درصد، کادر را به سمت راست (بیرون کادر) می‌برد
+             و با حرکت به سمت ۰، دائماً برندهای جدید از سمت راست وارد می‌شوند */
           0% {
-            transform: translateX(0);
+            transform: translateX(50%);
           }
           100% {
-            transform: translateX(-50%);
+            transform: translateX(0);
           }
         }
         .animate-scroll {

@@ -19,9 +19,7 @@ export async function Header() {
         {/* ===== سمت چپ: لوگو + (در موبایل) دکمه همبرگر ===== */}
         <div className="flex items-center gap-2 md:gap-4">
           {/* دکمه همبرگر (فقط در موبایل) */}
-          <div className="md:hidden">
-            <MobileNav />
-          </div>
+          
 
           <Link href={PUBLIC_ROUTES.home} className="flex items-center gap-2">
             <Image
@@ -62,6 +60,9 @@ export async function Header() {
             isAuthenticated={isAuthenticated}
             logoutAction={logoutAction}
           />
+          <div className="md:hidden">
+            <MobileNav />
+          </div>
         </div>
       </div>
     </header>
