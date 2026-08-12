@@ -1,18 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, Sparkles } from "lucide-react";
+import { ServicesBannerProps } from "../types/service.dto";
 
-type ServicesBanner = {
-  enabled?: boolean;
-  title?: string;
-  subtitle?: string;
-  imageUrl?: string;
-  ctaLabel?: string;
-  ctaHref?: string;
-};
-
-type ServicesBannerProps = {
-  banner: ServicesBanner;
-};
 
 export function ServicesPageBanner({ banner }: ServicesBannerProps) {
   if (!banner || !banner.enabled) return null;

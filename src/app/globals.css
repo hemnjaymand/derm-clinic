@@ -7,82 +7,85 @@
 
 :root {
   /* --------------------------------------------
-     پس‌زمینه اصلی: سفید با ته‌رنگ بنفش (حس پاکیزگی و آرامش)
+     پس‌زمینه اصلی: سبز بسیار روشن
      -------------------------------------------- */
-  --background: oklch(0.98 0.008 295);
-  --foreground: oklch(0.18 0.04 280);
+  --background: #D7FBE8;
+  --foreground: #1A3B2E; /* سبز تیره برای متن */
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.04 280);
+  --card: #FFFFFF;
+  --card-foreground: #1A3B2E;
 
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.04 280);
+  --popover: #FFFFFF;
+  --popover-foreground: #1A3B2E;
 
   /* --------------------------------------------
-     رنگ اصلی برند (Primary): بنفش ارکیده‌ای پررنگ
+     رنگ اصلی برند: سبز زمردی تیره (اعتماد، تخصص)
      -------------------------------------------- */
-  --primary: oklch(0.32 0.10 290);
-  --primary-foreground: oklch(0.98 0.008 295);
+  --primary: #087C65;
+  --primary-foreground: #FFFFFF;
 
   /* --------------------------------------------
-     رنگ ثانویه (Secondary): صورتی مخملی (Blush)
+     رنگ ثانویه: سبز شاداب و ملایم (دکمه‌ها و اقدامات)
      -------------------------------------------- */
-  --secondary: oklch(0.78 0.08 15);
-  --secondary-foreground: oklch(0.18 0.04 280);
-
-  --muted: oklch(0.92 0.02 295);
-  --muted-foreground: oklch(0.40 0.06 285);
-
-  --accent: oklch(0.85 0.06 15);
-  --accent-foreground: oklch(0.18 0.04 280);
+  --secondary: #62D2A2;
+  --secondary-foreground: #1A3B2E;
 
   /* --------------------------------------------
-     رنگ‌های خطا و بازخورد
+     رنگ‌های ملایم و پس‌زمینه‌ای
      -------------------------------------------- */
-  --destructive: oklch(0.65 0.14 20);
-  --destructive-foreground: oklch(1 0 0);
+  --muted: #E8F5ED;
+  --muted-foreground: #3A5A4E;
+
+  --accent: #B8E6CC;
+  --accent-foreground: #1A3B2E;
 
   /* --------------------------------------------
-     حاشیه‌ها و اینپوت‌ها
+     رنگ‌های خطا
      -------------------------------------------- */
-  --border: oklch(0.85 0.04 295);
-  --input: oklch(0.85 0.04 295);
-  --ring: oklch(0.50 0.12 290);
+  --destructive: #E8827A;
+  --destructive-foreground: #FFFFFF;
+
+  /* --------------------------------------------
+     حاشیه‌ها و ورودی‌ها
+     -------------------------------------------- */
+  --border: #C8E6D0;
+  --input: #C8E6D0;
+  --ring: #087C65;
 
   --radius: 0.75rem;
 }
 
 /* --------------------------------------------
-   حالت دارک
+   حالت دارک (تاریک) — برای محیط‌های کم‌نور
    -------------------------------------------- */
 .dark {
-  --background: oklch(0.15 0.02 280);
-  --foreground: oklch(0.95 0.01 295);
+  --background: #0F1F18;
+  --foreground: #E8F5ED;
 
-  --card: oklch(0.22 0.02 280);
-  --card-foreground: oklch(0.95 0.01 295);
+  --card: #1A2F26;
+  --card-foreground: #E8F5ED;
 
-  --popover: oklch(0.22 0.02 280);
-  --popover-foreground: oklch(0.95 0.01 295);
+  --popover: #1A2F26;
+  --popover-foreground: #E8F5ED;
 
-  --primary: oklch(0.70 0.10 295);
-  --primary-foreground: oklch(0.15 0.02 280);
+  --primary: #4DB892;
+  --primary-foreground: #0F1F18;
 
-  --secondary: oklch(0.65 0.08 15);
-  --secondary-foreground: oklch(0.95 0.01 295);
+  --secondary: #3A8A6A;
+  --secondary-foreground: #E8F5ED;
 
-  --muted: oklch(0.28 0.02 280);
-  --muted-foreground: oklch(0.70 0.04 295);
+  --muted: #1E3B2E;
+  --muted-foreground: #A8CBB8;
 
-  --accent: oklch(0.30 0.04 15);
-  --accent-foreground: oklch(0.95 0.01 295);
+  --accent: #2A4A3A;
+  --accent-foreground: #E8F5ED;
 
-  --destructive: oklch(0.55 0.14 20);
-  --destructive-foreground: oklch(0.95 0.01 295);
+  --destructive: #B85A52;
+  --destructive-foreground: #E8F5ED;
 
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.70 0.10 295);
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #4DB892;
 }
 
 /* --------------------------------------------
@@ -119,8 +122,6 @@
     border-color: var(--color-border);
   }
 
-  /* جلوگیری از اسکرول افقی ناخواسته که با تکنیک Full-Bleed
-     در SectionWrapper (w-screen + translate) ممکن است رخ دهد */
   html,
   body {
     overflow-x: hidden;

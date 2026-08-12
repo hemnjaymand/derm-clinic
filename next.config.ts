@@ -6,10 +6,12 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        // کلمه https:// را از اینجا حذف کردم، فقط دامنه خالص باید باشد
         hostname: "bndaeqkqmtyimbmanubx.supabase.co", 
+        pathname: "/storage/v1/object/public/**",
         port: "",
-        pathname: "/**",
+        // کلمه https:// را از اینجا حذف کردم، فقط دامنه خالص باید باشد
+      
+
       },
     ],
   },

@@ -15,6 +15,38 @@ import {
 import { updateSiteSettingsAction } from "../actions/settings.actions";
 import { ImageUploadField } from "./image-upload-field";
 
+export type SiteSettings = {
+  clinicName: string;
+  address: string;
+  phone: string;
+  instagram: string;
+  email: string;
+  workingHours: string;
+  aboutText: string;
+  heroImageUrl: string;
+  bannerImages: string[];
+  licenseText: string;
+  latestArticles: { title: string; href: string }[];
+  latitude: string;
+  longitude: string;
+  mapZoom: number;
+  consultationTitle: string;
+  consultationSubtitle: string;
+  consultationButtonText: string;
+  consultationBackgroundImage: string;
+  featuresBackgroundImage: string;
+  videoTestimonialsBackgroundImage: string;
+  recentPatientsBackgroundImage: string;
+  brandsBackgroundImage: string;
+  // brands: Brand[];
+  // videoTestimonials: VideoTestimonial[];
+  // usefulLinks: UsefulLink[];
+  // features: Feature[];
+  // serviceDetail: ServiceDetail | null;
+  // serviceTags: ServiceTag[];
+  // recentShowcaseCases: ShowcaseCase[];
+  // pageBanners: PageBanners;
+};
 export function SettingsForm({
   initialData,
 }: {
@@ -142,7 +174,7 @@ export function SettingsForm({
             <label className="block">
               <input
                 type="file"
-                accept="image/jpeg,image/png,image/webp"
+               accept="image/jpeg,image/png,image/webp,image/svg+xml"
                 multiple
                 className="hidden"
                 onChange={uploadBannerFiles}

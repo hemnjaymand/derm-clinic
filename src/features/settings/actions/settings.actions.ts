@@ -58,21 +58,23 @@ export type SiteSettings = {
   videoTestimonialsBackgroundImage: string;
   recentPatientsBackgroundImage: string;
   brandsBackgroundImage: string;
-  
 };
 const defaultBrands: Brand[] = [
   { id: "1", name: "Prostrolane", imageUrl: "/images/brands/prostrolane.png" },
   { id: "2", name: "APERFECTHA®", imageUrl: "/images/brands/aperfectha.png" },
-  { id: "3", name: "INNOAESTHETICS", imageUrl: "/images/brands/innoaesthetics.png" },
+  {
+    id: "3",
+    name: "INNOAESTHETICS",
+    imageUrl: "/images/brands/innoaesthetics.png",
+  },
   { id: "4", name: "Alaixin®", imageUrl: "/images/brands/alaixin.png" },
 ];
-
 
 function safeJsonParse<T>(
   value: string | undefined,
   schema: z.ZodType<T>,
   fallback: T,
-  keyNameForLog: string
+  keyNameForLog: string,
 ): T {
   if (!value) return fallback;
   try {
@@ -81,7 +83,7 @@ function safeJsonParse<T>(
     if (!result.success) {
       console.warn(
         `⚠️ داده‌ی ذخیره‌شده برای "${keyNameForLog}" با ساختار موردانتظار مطابقت ندارد؛ از مقدار پیش‌فرض استفاده می‌شود.`,
-        result.error.flatten()
+        result.error.flatten(),
       );
       return fallback;
     }
@@ -134,31 +136,61 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     heroImageUrl: getValue("heroImageUrl"),
     licenseText: getValue("licenseText"),
 
-      bannerImages: safeJsonParse(getValue("bannerImages"), z.array(z.string()), [], "bannerImages"),
-    usefulLinks: safeJsonParse(getValue("usefulLinks"), z.array(usefulLinkSchema), [], "usefulLinks"),
-    features: safeJsonParse(getValue("features"), z.array(featureSchema), [], "features"),
-    serviceTags: safeJsonParse(getValue("serviceTags"), z.array(serviceTagSchema), [], "serviceTags"),
+    bannerImages: safeJsonParse(
+      getValue("bannerImages"),
+      z.array(z.string()),
+      [],
+      "bannerImages",
+    ),
+    usefulLinks: safeJsonParse(
+      getValue("usefulLinks"),
+      z.array(usefulLinkSchema),
+      [],
+      "usefulLinks",
+    ),
+    features: safeJsonParse(
+      getValue("features"),
+      z.array(featureSchema),
+      [],
+      "features",
+    ),
+    serviceTags: safeJsonParse(
+      getValue("serviceTags"),
+      z.array(serviceTagSchema),
+      [],
+      "serviceTags",
+    ),
     recentShowcaseCases: safeJsonParse(
       getValue("recentShowcaseCases"),
       z.array(showcaseCaseSchema),
       [],
-      "recentShowcaseCases"
+      "recentShowcaseCases",
     ),
-    pageBanners: safeJsonParse(getValue("pageBanners"), pageBannersSchema, {}, "pageBanners"),
+    pageBanners: safeJsonParse(
+      getValue("pageBanners"),
+      pageBannersSchema,
+      {},
+      "pageBanners",
+    ),
 
     serviceDetail: safeJsonParse(
       getValue("serviceDetail"),
       serviceDetailSchema.nullable(),
       null,
-      "serviceDetail"
+      "serviceDetail",
     ),
 
-    brands: safeJsonParse(getValue("brands"), z.array(brandSchema), defaultBrands, "brands"),
+    brands: safeJsonParse(
+      getValue("brands"),
+      z.array(brandSchema),
+      defaultBrands,
+      "brands",
+    ),
     videoTestimonials: safeJsonParse(
       getValue("videoTestimonials"),
       z.array(videoTestimonialSchema),
       defaultVideoTestimonials,
-      "videoTestimonials"
+      "videoTestimonials",
     ),
 
     latitude: getValue("latitude", ""),
@@ -166,26 +198,32 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     mapZoom: Number(getValue("mapZoom", "16")),
 
     consultationTitle: getValue("consultationTitle", "درخواست مشاوره رایگان"),
-    consultationSubtitle: getValue("consultationSubtitle", "تنها سه قدم تا رزرو وقت"),
+    consultationSubtitle: getValue(
+      "consultationSubtitle",
+      "تنها سه قدم تا رزرو وقت",
+    ),
     consultationButtonText: getValue("consultationButtonText", "ثبت درخواست"),
     consultationBackgroundImage: getValue("consultationBackgroundImage", ""),
 
-   featuresBackgroundImage: getValue("featuresBackgroundImage", "/images/features-bg.jpg"),
-  videoTestimonialsBackgroundImage: getValue(
-    "videoTestimonialsBackgroundImage",
-    "/images/video-testimonials-bg.jpg"
-  ),
-  recentPatientsBackgroundImage: getValue(
-    "recentPatientsBackgroundImage",
-    "/images/recent-patients-bg.jpg"
-  ),
-  brandsBackgroundImage: getValue("brandsBackgroundImage", ""),   // ← این خط اضافه شود
+    featuresBackgroundImage: getValue(
+      "featuresBackgroundImage",
+      "/images/features-bg.jpg",
+    ),
+    videoTestimonialsBackgroundImage: getValue(
+      "videoTestimonialsBackgroundImage",
+      "/images/video-testimonials-bg.jpg",
+    ),
+    recentPatientsBackgroundImage: getValue(
+      "recentPatientsBackgroundImage",
+      "/images/recent-patients-bg.jpg",
+    ),
+    brandsBackgroundImage: getValue("brandsBackgroundImage", ""), // ← این خط اضافه شود
 
-  latestArticles: latestPosts.map((post) => ({
-    title: post.title,
-    href: `/blog/${post.slug}`,
-  })),
-};
+    latestArticles: latestPosts.map((post) => ({
+      title: post.title,
+      href: `/blog/${post.slug}`,
+    })),
+  };
 }
 export async function getPageBanner(page: PageBannerKey) {
   const settings = await getSiteSettings();

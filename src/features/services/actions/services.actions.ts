@@ -36,6 +36,7 @@ export async function createServiceAction(
         title: parsed.data.title,
         slug: slugify(parsed.data.title),
         description: parsed.data.description || null,
+        icon: parsed.data.icon ?? null,
         durationMin: parsed.data.durationMin,
         price: parsed.data.price ?? null,
         isActive: parsed.data.isActive,
@@ -65,6 +66,7 @@ export async function updateServiceAction(
       data: {
         title: parsed.data.title,
         description: parsed.data.description || null,
+        icon: parsed.data.icon ?? null,
         durationMin: parsed.data.durationMin,
         price: parsed.data.price ?? null,
         isActive: parsed.data.isActive,

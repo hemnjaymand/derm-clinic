@@ -79,7 +79,7 @@ export default async function ContactPage() {
   return (
     <main className="flex min-h-screen flex-col bg-background">
       {/* نمایش بنر داینامیک */}
-      {banner && <PageBanner fallbackTitle="تماس با ما" banner={banner} />}
+      {banner && <PageBanner fallbackTitle=" " banner={banner} />}
 
       <div className="container mx-auto max-w-4xl px-4 py-16 md:py-24" dir="rtl">
         {/* اگر بنر غیرفعال بود، عنوان ساده نمایش داده شود */}

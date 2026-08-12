@@ -8,7 +8,8 @@ const LOGIN_PATH = "/login";
 export default auth((req) => {
   const isProtected = req.nextUrl.pathname.startsWith(PROTECTED_PREFIX);
   const isLoggedIn = !!req.auth;
-
+ console.log("🔍 req.auth:", req.auth);
+  console.log("🍪 cookies:", req.headers.get("cookie"));
   if (isProtected && !isLoggedIn) {
     const loginUrl = new URL(LOGIN_PATH, req.nextUrl.origin);
     loginUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);

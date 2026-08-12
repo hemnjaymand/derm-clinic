@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url     =env("DATABASE_URL")
 }
 
 model User {
@@ -75,6 +75,7 @@ model Service {
   durationMin  Int
   price        Int?
   imageUrl     String?
+  icon         String?
   isActive     Boolean       @default(true)
   order        Int           @default(0)
   createdAt    DateTime      @default(now())

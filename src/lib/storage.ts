@@ -1,4 +1,8 @@
-import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 import { createClient } from "@supabase/supabase-js";
 import { env } from "@/lib/env";
 
@@ -31,11 +35,21 @@ class S3CompatibleStorage implements StorageProvider {
     });
   }
 
-  async upload({ buffer, fileName, contentType, folder }: {
-    buffer: Buffer; fileName: string; contentType: string; folder: string;
+  async upload({
+    buffer,
+    fileName,
+    contentType,
+    folder,
+  }: {
+    buffer: Buffer;
+    fileName: string;
+    contentType: string;
+    folder: string;
   }): Promise<UploadResult> {
     try {
-      const key = `${folder}/${Date.now()}-${sanitizeFileName(fileName)}`;
+      const key = `${folder}/${crypto.randomUUID()}-${sanitizeFileName(
+        fileName,
+      )}`;
       await this.client.send(
         new PutObjectCommand({
           Bucket: env.STORAGE_BUCKET_NAME!,
@@ -43,18 +57,23 @@ class S3CompatibleStorage implements StorageProvider {
           Body: buffer,
           ContentType: contentType,
           ACL: "public-read",
-        })
+        }),
       );
       const url = `${env.STORAGE_ENDPOINT}/${env.STORAGE_BUCKET_NAME}/${key}`;
       return { success: true, url, key };
     } catch (error) {
-      return { success: false, error: error instanceof Error ? error.message : "خطا در آپلود فایل" };
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "خطا در آپلود فایل",
+      };
     }
   }
 
   async delete(key: string): Promise<{ success: boolean }> {
     try {
-      await this.client.send(new DeleteObjectCommand({ Bucket: env.STORAGE_BUCKET_NAME!, Key: key }));
+      await this.client.send(
+        new DeleteObjectCommand({ Bucket: env.STORAGE_BUCKET_NAME!, Key: key }),
+      );
       return { success: true };
     } catch {
       return { success: false };
@@ -68,20 +87,35 @@ class S3CompatibleStorage implements StorageProvider {
  * Service Role به RLS پایبند نیست، پس Upload همیشه کار می‌کند حتی اگر Bucket Policy محدود باشد.
  */
 class SupabaseStorageProvider implements StorageProvider {
-  private client = createClient(env.NEXT_PUBLIC_SUPABASE_URL!, env.SUPABASE_SERVICE_ROLE_KEY!);
+  private client = createClient(
+    env.NEXT_PUBLIC_SUPABASE_URL!,
+    env.SUPABASE_SERVICE_ROLE_KEY!,
+  );
 
-  async upload({ buffer, fileName, contentType, folder }: {
-    buffer: Buffer; fileName: string; contentType: string; folder: string;
+  async upload({
+    buffer,
+    fileName,
+    contentType,
+    folder,
+  }: {
+    buffer: Buffer;
+    fileName: string;
+    contentType: string;
+    folder: string;
   }): Promise<UploadResult> {
     try {
-      const key = `${folder}/${Date.now()}-${sanitizeFileName(fileName)}`;
+      const key = `${folder}/${crypto.randomUUID()}-${sanitizeFileName(
+        fileName,
+      )}`;
       const bucket = env.STORAGE_BUCKET_NAME!;
 
-      const { error } = await this.client.storage.from(bucket).upload(key, buffer, {
-        contentType,
-        cacheControl: "3600",
-        upsert: false,
-      });
+      const { error } = await this.client.storage
+        .from(bucket)
+        .upload(key, buffer, {
+          contentType,
+          cacheControl: "3600",
+          upsert: false,
+        });
 
       if (error) {
         return { success: false, error: error.message };
@@ -92,7 +126,10 @@ class SupabaseStorageProvider implements StorageProvider {
     } catch (error) {
       return {
         success: false,
-        error: error instanceof Error ? error.message : "خطا در آپلود فایل به Supabase",
+        error:
+          error instanceof Error
+            ? error.message
+            : "خطا در آپلود فایل به Supabase",
       };
     }
   }
@@ -124,10 +161,19 @@ let instance: StorageProvider | undefined;
 
 export function getStorageProvider(): StorageProvider {
   if (!instance) {
-    instance = env.STORAGE_PROVIDER === "supabase" ? new SupabaseStorageProvider() : new S3CompatibleStorage();
+    instance =
+      env.STORAGE_PROVIDER === "supabase"
+        ? new SupabaseStorageProvider()
+        : new S3CompatibleStorage();
   }
   return instance;
 }
 
-export const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+export const ALLOWED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/jpg",
+  "image/svg+xml",
+];
 export const MAX_UPLOAD_SIZE_BYTES = 5 * 1024 * 1024;

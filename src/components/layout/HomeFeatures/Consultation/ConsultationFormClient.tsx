@@ -78,7 +78,7 @@ export function ConsultationFormClient({
       {/* =====  پس‌زمینه ===== */}
       <div className="absolute inset-0 z-0">
         {/* گرادینت بنفش */}
-        <div className="absolute inset-0 bg-liner-to-br from-primary/90 via-primary/60 to-primary/30" />
+        <div className="absolute inset-0 bg-liner-to-br from-primary/90 via-primary/60 to-primary/30 " />
 
         {/* تصویر پس‌زمینه (در صورت وجود) */}
         {hasBackgroundImage && (

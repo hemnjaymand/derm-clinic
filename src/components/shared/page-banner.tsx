@@ -26,7 +26,7 @@ export default function PageBanner({ banner, fallbackTitle }: PageBannerProps) {
       <div className="relative h-64 md:h-80 lg:h-96 bg-liner-to-r from-emerald-500 to-teal-600 flex items-center justify-center">
         <div className="absolute inset-0 bg-black/20" />
         <h1 className="relative text-white text-3xl md:text-5xl font-bold z-10">
-          {banner?.title || fallbackTitle || "درباره ما"}
+          {banner?.title || fallbackTitle }
         </h1>
       </div>
     );

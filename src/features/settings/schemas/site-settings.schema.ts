@@ -66,7 +66,7 @@ export const PAGE_BANNER_KEYS = [
 export type PageBannerKey = (typeof PAGE_BANNER_KEYS)[number];
 
 export const PAGE_BANNER_LABELS: Record<PageBannerKey, string> = {
-  about: "درباره ما",
+  about: " ",
   services: "خدمات",
   gallery: "گالری",
   blog: "مقالات",

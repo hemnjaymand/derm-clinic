@@ -18,7 +18,7 @@ export async function HeroSlider() {
   const settings = await getSiteSettings();
 
   const clinicName = settings.clinicName || "کلینیک";
-  const aboutText = settings.aboutText || "ارائه خدمات تخصصی پوست، مو و زیبایی";
+  const aboutText = settings.aboutText || "";
   const heroImage = settings.heroImageUrl || "";
 
   // دریافت bannerImages از تنظیمات دشبورد (فقط از دشبورد - بدون fallback)
@@ -33,7 +33,7 @@ export async function HeroSlider() {
     slides = bannerImages.map((imageUrl, index) => ({
       id: `slide-${index}`,
       imageUrl: imageUrl.trim(),
-      title: `به ${clinicName} خوش آمدید`,
+      title: ` ${clinicName}  `,
       subtitle: aboutText,
       ctaText: "دریافت مشاوره",
       ctaLink: "/consultation",
@@ -43,7 +43,7 @@ export async function HeroSlider() {
       {
         id: "slide-0",
         imageUrl: heroImage.trim(),
-        title: `به ${clinicName} خوش آمدید`,
+        title: ` ${clinicName} `,
         subtitle: aboutText,
         ctaText: "دریافت مشاوره",
         ctaLink: "/consultation",

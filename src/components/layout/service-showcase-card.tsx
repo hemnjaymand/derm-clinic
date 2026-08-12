@@ -1,16 +1,8 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
-
-export type ServiceShowcaseCardProps = {
-  /** آیکون اختصاصی — یک SVG یا کامپوننت لوکس‌آیکون؛ اندازه‌اش با CSS داخلی کنترل می‌شود */
-  icon: ReactNode;
-  /** عنوان کوچک بالای کارت (مثلاً نام لاتین خدمت) — اختیاری */
-  eyebrow?: string;
-  title: string;
-  description: string;
-  moreHref: string;
-  consultHref: string;
-};
+import Image from "next/image";
+// import { Sparkles } from "lucide-react";
+// import iconp from "../../../public/svg/imgi_4_face-lift.svg"
+import { ServiceShowcaseCardProps } from "@/features/services/types/service.dto";
 
 export function ServiceShowcaseCard({
   icon,
@@ -22,15 +14,26 @@ export function ServiceShowcaseCard({
 }: ServiceShowcaseCardProps) {
   return (
     <div className="group relative flex flex-col items-center overflow-hidden rounded-2xl bg-card p-8 text-center shadow-sm ring-1 ring-border transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-primary/10">
-      {/* خط تزئینی که از سمت راست باز می‌شود */}
+      {/* خط تزئینی بالای کارت */}
       <span
         aria-hidden
         className="absolute inset-x-0 top-0 h-1 origin-right scale-x-0 bg-gradient-to-l from-primary to-secondary transition-transform duration-500 ease-out group-hover:scale-x-100"
       />
 
-      {/* آیکون — این بخش را با SVG اختصاصی خودت جایگزین کن */}
+      {/* آیکون SVG (از استورج) */}
       <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-primary transition-colors duration-300 group-hover:bg-primary group-hover:text-primary-foreground">
-        <div className="h-9 w-9 [&_svg]:h-full [&_svg]:w-full">{icon}</div>
+        <div className="relative h-9 w-9 [&_svg]:h-full [&_svg]:w-full">
+          {icon && (
+            <Image
+              src={icon}
+              alt={title}
+              width={36}
+              height={36}
+              className="h-full w-full object-contain"
+              unoptimized
+            />
+          )}
+        </div>
       </div>
 
       {eyebrow && (
@@ -39,7 +42,7 @@ export function ServiceShowcaseCard({
         </p>
       )}
 
-      {/* عنوان با خط جداکننده‌ای که روی هاور پهن‌تر می‌شود */}
+      {/* عنوان با خطوط جداکننده */}
       <div className="my-3 flex items-center gap-3">
         <span className="h-px w-6 bg-border transition-all duration-300 group-hover:w-10 group-hover:bg-primary" />
         <h3 className="text-base font-bold text-foreground">{title}</h3>

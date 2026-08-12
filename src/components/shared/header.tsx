@@ -3,7 +3,7 @@ import Image from "next/image";
 import { PUBLIC_NAV_ITEMS, PUBLIC_ROUTES } from "@/constants/routes";
 import { Button } from "../ui/button";
 import { MobileNav, UserNav } from "../layout";
-import Logo1 from "../../../public/images/L O G O-new color-01.png";
+import Logo1 from "../../../public/images/logo/L O G O-new color-01.png";
 
 import { logoutAction } from "@/features/auth/actions/login.action";
 import { auth } from "@/lib/auth";
@@ -19,7 +19,6 @@ export async function Header() {
         {/* ===== سمت چپ: لوگو + (در موبایل) دکمه همبرگر ===== */}
         <div className="flex items-center gap-2 md:gap-4">
           {/* دکمه همبرگر (فقط در موبایل) */}
-          
 
           <Link href={PUBLIC_ROUTES.home} className="flex items-center gap-2">
             <Image

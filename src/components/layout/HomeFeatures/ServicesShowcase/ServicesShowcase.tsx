@@ -1,6 +1,5 @@
 import { getActiveServices } from "@/features/services/actions/services.actions";
 import { getSiteSettings } from "@/features/settings/actions/settings.actions";
-import { Sparkles } from "lucide-react";
 import { ServiceShowcaseCard } from "../../service-showcase-card";
 
 export async function ServicesShowcase() {
@@ -8,7 +7,7 @@ export async function ServicesShowcase() {
     getActiveServices(),
     getSiteSettings(),
   ]);
-
+   
   if (services.length === 0) return null;
 
   return (
@@ -27,8 +26,7 @@ export async function ServicesShowcase() {
         {services.slice(0, 6).map((service) => (
           <ServiceShowcaseCard
             key={service.id}
-            // TODO: هر خدمت باید آیکون اختصاصی خودش را بگیرد — فعلاً یک آیکون پیش‌فرض
-            icon={<Sparkles />}
+            icon={service.icon ?? "/svg/default-service.svg"}
             title={service.title}
             description={service.description ?? ""}
             moreHref={`/services/${service.id}`}

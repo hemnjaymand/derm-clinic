@@ -16,7 +16,7 @@ export default async function AboutPage() {
 
     return (
         <>
-            {banner && <PageBanner fallbackTitle="درباره ما" banner={banner} />}
+            {banner && <PageBanner fallbackTitle="" banner={banner} />}
 
             <div className="relative overflow-hidden bg-gradient-to-b from-slate-50/80 to-white dark:from-gray-950 dark:to-gray-900" dir="rtl">
                 {/* ========== المان‌های تزئینی پس‌زمینه ========== */}

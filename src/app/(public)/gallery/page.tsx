@@ -16,7 +16,7 @@ export default async function PublicGalleryPage() {
   return (
     <main className="flex min-h-screen flex-col bg-background">
       {/* نمایش بنر داینامیک صفحه گالری */}
-      {banner && <PageBanner fallbackTitle="گالری تصاویر" banner={banner} />}
+      {banner && <PageBanner fallbackTitle="" banner={banner} />}
 
       <div className="container mx-auto px-4 py-16 md:py-24" dir="rtl">
         {/* اگر بنر فعال نبود، یک هدر ساده نمایش داده شود */}

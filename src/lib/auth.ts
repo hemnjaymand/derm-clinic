@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import { loginSchema } from "../features/auth/schemas/login.schema";
 import { prisma } from "./prisma";
 
-
 // ============================
 //  گسترش تایپ‌های NextAuth
 // ============================
@@ -29,6 +28,7 @@ declare module "next-auth" {
 //  کانفیگ اصلی
 // ============================
 export const { handlers, auth, signIn, signOut } = NextAuth({
+  trustHost: true,  
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
   providers: [
@@ -48,7 +48,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         const isValidPassword = await bcrypt.compare(
           parsed.data.password,
-          admin.passwordHash
+          admin.passwordHash,
         );
         if (!isValidPassword) return null;
 
