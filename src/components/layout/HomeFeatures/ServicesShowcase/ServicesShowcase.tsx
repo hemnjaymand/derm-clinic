@@ -26,7 +26,7 @@ export async function ServicesShowcase() {
         {services.slice(0, 6).map((service) => (
           <ServiceShowcaseCard
             key={service.id}
-            icon={service.icon ?? "/svg/default-service.svg"}
+            icon={service.icon}
             title={service.title}
             description={service.description ?? ""}
             moreHref={`/services/${service.id}`}
