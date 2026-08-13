@@ -76,7 +76,7 @@ export function ConsultationFormClient({
   const hasBackgroundImage = Boolean(settings.backgroundImage);
 
   return (
-    <section className="relative overflow-hidden py-16 md:py-24">
+    <section className="relative overflow-hidden py-16 md:py-24  " id="consult-section"  >
       {/* ===== پس‌زمینه با گرادینت اصلاح شده ===== */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/80 to-primary/60" />

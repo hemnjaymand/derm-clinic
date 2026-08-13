@@ -144,7 +144,7 @@ export function RecentPatientsClient({
           <div className="relative overflow-hidden rounded-3xl border border-border/50 bg-card shadow-2xl">
             {/*  کانتینر اصلی عکس (جایگاه صحیح تشخیص Swipe) */}
             <div
-              className="relative aspect-square w-full bg-slate-950 sm:aspect-[16/9] touch-pan-y"
+              className="relative aspect-square w-full bg-emerald-100 sm:aspect-[16/9] touch-pan-y"
               onTouchStart={onTouchStart}
               onTouchMove={onTouchMove}
               onTouchEnd={onTouchEnd}
@@ -171,7 +171,7 @@ export function RecentPatientsClient({
                 {/* دکمه قبل (راست) */}
                 <button
                   type="button"
-                  onTouchStart={(e) => e.stopPropagation()} // 🟢 محافظت در برابر تداخل لمس
+                  onTouchStart={(e) => e.stopPropagation()} 
                   onClick={(e) => {
                     e.stopPropagation();
                     toggleView("before");
@@ -203,7 +203,7 @@ export function RecentPatientsClient({
               />
 
               {/* برچسب نام و خدمت */}
-              <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-5 md:p-6 pointer-events-none">
+              {/* <div className="absolute bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-black/0 via-black/30 to-transparent p-5 md:p-6 pointer-events-none">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
                     <div className="rounded-full bg-white/20 p-2 backdrop-blur-sm">
@@ -217,7 +217,7 @@ export function RecentPatientsClient({
                     {currentPatient.service}
                   </span>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/*  نوار ناوبری پایین (بدون منطق Swipe مزاحم) */}
@@ -256,7 +256,7 @@ export function RecentPatientsClient({
 
       <div className="mt-10 text-center">
         <Link
-          href="/portfolio"
+          href="/gallery"
           className="inline-flex items-center gap-2 rounded-xl border-2 border-primary bg-transparent px-8 py-3 text-sm font-bold text-primary transition-all hover:bg-primary hover:text-primary-foreground active:scale-95"
         >
           مشاهده همه نمونه‌ها

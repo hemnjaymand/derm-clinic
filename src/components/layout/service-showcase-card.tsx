@@ -1,6 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ServiceShowcaseCardProps } from "@/features/services/types/service.dto";
+  
+
+
+const scrollToConsult = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  e.preventDefault(); // جلوگیری از پرش ناگهانی صفحه
+  
+  const targetElement = document.getElementById("consult-section"); 
+  if (targetElement) {
+    targetElement.scrollIntoView({
+      behavior: "smooth", 
+      block: "start",     
+    });
+  }
+};
 
 export function ServiceShowcaseCard({
   icon,
@@ -59,13 +73,13 @@ export function ServiceShowcaseCard({
       {/* دکمه‌های عملیاتی */}
       <div className="flex w-full flex-col justify-center gap-1.5 sm:flex-row sm:gap-2">
         <Link
-          href={moreHref}
+          href="/services"
           className="w-full rounded-full border border-primary/25 bg-primary/5 px-2.5 py-1.5 text-center text-[11px] font-medium text-primary transition-colors duration-200 hover:bg-primary hover:text-primary-foreground sm:w-auto sm:px-4 sm:py-2 sm:text-xs"
         >
           اطلاعات بیشتر
         </Link>
         <Link
-          href={consultHref}
+          href="#consult-section"
           className="w-full rounded-full bg-primary px-2.5 py-1.5 text-center text-[11px] font-medium text-primary-foreground shadow-sm transition-transform duration-200 hover:scale-[1.03] sm:w-auto sm:px-4 sm:py-2 sm:text-xs"
         >
           درخواست مشاوره
