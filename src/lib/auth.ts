@@ -41,20 +41,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     maxAge: 30 * 24 * 60 * 60, // ۳۰ روز
   },
 
-  // ===== تنظیمات کوکی =====
-  cookies: {
-    sessionToken: {
-      name: "next-auth.session-token",
-      options: {
-        httpOnly: true,
-         sameSite: "none",
-        // secure: process.env.NODE_ENV === "production",
-        secure: true,
-        path: "/",
-      },
-    },
-  },
-
   // ===== صفحات =====
   pages: {
     signIn: "/login",

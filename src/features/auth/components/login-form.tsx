@@ -50,7 +50,7 @@ function onSubmit(values: LoginInput) {
     });
 
     if (result?.error) {
-      toast.error("خطا در ورود");
+      toast.error("شماره موبایل یا رمز عبور اشتباه است");
     } else {
       window.location.href = "/dashboard";
     }
