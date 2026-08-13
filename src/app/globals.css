@@ -132,3 +132,20 @@
     color: var(--color-foreground);
   }
 }
+
+.floating-buttons-container {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  right: 16px;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.floating-buttons-container button {
+  pointer-events: auto;
+}
