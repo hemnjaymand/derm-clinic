@@ -147,17 +147,30 @@ export function SettingsForm({
         {/* ستون سایدبار */}
         <div className="flex w-full shrink-0 flex-col gap-6 lg:w-96 order-2 lg:order-1">
           {/* مجوز */}
-          <section className="space-y-4 rounded-xl border bg-card p-5 shadow-sm">
-            <h3 className="border-b pb-2 font-semibold">مجوز و نماد اعتماد</h3>
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
+            <h3 className="border-b border-emerald-200/60 pb-3 font-semibold text-emerald-950">
+              مجوز و نماد اعتماد
+            </h3>
             <div className="space-y-2">
-              <Label htmlFor="licenseText">متن یا کد مجوز</Label>
-              <Input id="licenseText" {...form.register("licenseText")} />
+              <Label
+                htmlFor="licenseText"
+                className="text-xs font-medium text-muted-foreground"
+              >
+                متن یا کد مجوز
+              </Label>
+              <Input
+                id="licenseText"
+                className="h-9 bg-white/80 border-emerald-200 transition-colors focus-visible:ring-emerald-500"
+                {...form.register("licenseText")}
+              />
             </div>
           </section>
 
           {/* بنر اصلی */}
-          <section className="space-y-4 rounded-xl border bg-card p-5 shadow-sm">
-            <h3 className="border-b pb-2 font-semibold">تصویر اصلی بنر</h3>
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
+            <h3 className="border-b border-emerald-200/60 pb-3 font-semibold text-emerald-950">
+              تصویر اصلی بنر
+            </h3>
             <ImageUploadField
               label=""
               value={form.watch("heroImageUrl")}
@@ -169,12 +182,14 @@ export function SettingsForm({
           </section>
 
           {/* اسلایدر */}
-          <section className="space-y-4 rounded-xl border bg-card p-5 shadow-sm">
-            <h3 className="border-b pb-2 font-semibold">تصاویر اسلایدر</h3>
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
+            <h3 className="border-b border-emerald-200/60 pb-3 font-semibold text-emerald-950">
+              تصاویر اسلایدر
+            </h3>
             <label className="block">
               <input
                 type="file"
-               accept="image/jpeg,image/png,image/webp,image/svg+xml"
+                accept="image/jpeg,image/png,image/webp,image/svg+xml"
                 multiple
                 className="hidden"
                 onChange={uploadBannerFiles}
@@ -182,7 +197,7 @@ export function SettingsForm({
               <Button
                 type="button"
                 variant="outline"
-                className="w-full"
+                className="w-full bg-white/80 border-emerald-200 transition-all hover:bg-emerald-100/50"
                 disabled={isUploadingBanners}
                 asChild
               >
@@ -193,22 +208,22 @@ export function SettingsForm({
             </label>
 
             {bannerImages.length > 0 && (
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-3 gap-2.5">
                 {bannerImages.map((url, index) => (
                   <div
                     key={url}
-                    className="group relative aspect-square overflow-hidden rounded-md border"
+                    className="group relative aspect-square overflow-hidden rounded-lg border border-emerald-200 bg-white/80 shadow-xs"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={url}
                       alt={`اسلاید ${index + 1}`}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     <button
                       type="button"
                       onClick={() => removeBannerImage(index)}
-                      className="absolute -left-1.5 -top-1.5 rounded-full bg-destructive p-1 text-destructive-foreground opacity-0 shadow-sm transition-opacity group-hover:opacity-100"
+                      className="absolute -left-1.5 -top-1.5 rounded-full bg-destructive p-1 text-destructive-foreground opacity-0 shadow-sm transition-all duration-200 group-hover:opacity-100 hover:scale-110"
                     >
                       <X className="h-3.5 w-3.5" />
                     </button>
@@ -219,13 +234,16 @@ export function SettingsForm({
           </section>
 
           {/* برندها */}
-          <section className="space-y-4 rounded-xl border bg-card p-5 shadow-sm">
-            <div className="flex items-center justify-between border-b pb-2">
-              <h3 className="font-semibold">برندها / همکاران</h3>
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
+            <div className="flex items-center justify-between border-b border-emerald-200/60 pb-3">
+              <h3 className="font-semibold text-emerald-950">
+                برندها / همکاران
+              </h3>
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
+                className="h-8 text-xs hover:bg-emerald-100/70 hover:text-emerald-900"
                 onClick={() =>
                   appendBrand({
                     id: crypto.randomUUID(),
@@ -234,12 +252,12 @@ export function SettingsForm({
                   })
                 }
               >
-                <Plus className="ml-2 h-4 w-4" />
+                <Plus className="ml-1.5 h-3.5 w-3.5" />
                 افزودن
               </Button>
             </div>
             {brandFields.length === 0 && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground py-1">
                 هنوز برندی اضافه نشده است.
               </p>
             )}
@@ -247,22 +265,22 @@ export function SettingsForm({
               {brandFields.map((field, index) => (
                 <div
                   key={field.id}
-                  className="space-y-2 rounded-lg border bg-muted/30 p-3"
+                  className="space-y-3 rounded-lg border border-emerald-200/60 bg-white/80 p-3.5 transition-colors hover:bg-emerald-50/50"
                 >
                   <div className="flex items-center gap-2">
                     <Input
                       placeholder="نام برند"
-                      className="h-8 flex-1 text-sm"
+                      className="h-8 flex-1 text-xs bg-white border-emerald-200"
                       {...form.register(`brands.${index}.name`)}
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 shrink-0"
+                      className="h-8 w-8 shrink-0 hover:bg-destructive/10"
                       onClick={() => removeBrand(index)}
                     >
-                      <Trash2 className="h-4 w-4 text-destructive" />
+                      <Trash2 className="h-3.5 w-3.5 text-destructive" />
                     </Button>
                   </div>
                   <ImageUploadField
@@ -282,21 +300,24 @@ export function SettingsForm({
           </section>
 
           {/* لینک‌های Footer */}
-          <section className="space-y-4 rounded-xl border bg-card p-5 shadow-sm">
-            <div className="flex items-center justify-between border-b pb-2">
-              <h3 className="font-semibold">لینک‌های Footer</h3>
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
+            <div className="flex items-center justify-between border-b border-emerald-200/60 pb-3">
+              <h3 className="font-semibold text-emerald-950">
+                لینک‌های Footer
+              </h3>
               <Button
                 type="button"
                 variant="ghost"
                 size="sm"
+                className="h-8 text-xs hover:bg-emerald-100/70 hover:text-emerald-900"
                 onClick={() => appendLink({ label: "", href: "" })}
               >
-                <Plus className="ml-2 h-4 w-4" />
+                <Plus className="ml-1.5 h-3.5 w-3.5" />
                 افزودن
               </Button>
             </div>
             {linkFields.length === 0 && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground py-1">
                 هنوز لینکی اضافه نشده است.
               </p>
             )}
@@ -304,28 +325,28 @@ export function SettingsForm({
               {linkFields.map((field, index) => (
                 <div
                   key={field.id}
-                  className="space-y-2 rounded-lg border bg-muted/30 p-3"
+                  className="space-y-2.5 rounded-lg border border-emerald-200/60 bg-white/80 p-3.5 transition-colors hover:bg-emerald-50/50"
                 >
                   <Input
                     placeholder="عنوان لینک"
-                    className="h-8 text-sm"
+                    className="h-8 text-xs bg-white border-emerald-200"
                     {...form.register(`usefulLinks.${index}.label`)}
                   />
                   <div className="flex items-center gap-2">
                     <Input
                       placeholder="آدرس (https://...)"
                       dir="ltr"
-                      className="h-8 flex-1 text-left text-sm"
+                      className="h-8 flex-1 text-left text-xs font-mono bg-white border-emerald-200"
                       {...form.register(`usefulLinks.${index}.href`)}
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 shrink-0"
+                      className="h-8 w-8 shrink-0 hover:bg-destructive/10"
                       onClick={() => removeLink(index)}
                     >
-                      <Trash2 className="h-4 w-4 text-destructive" />
+                      <Trash2 className="h-3.5 w-3.5 text-destructive" />
                     </Button>
                   </div>
                 </div>
@@ -337,83 +358,108 @@ export function SettingsForm({
         {/* ستون اصلی */}
         <div className="flex w-full flex-1 flex-col gap-6 order-1 lg:order-2">
           {/* اطلاعات پایه */}
-          <section className="space-y-6 rounded-xl border bg-card p-5 shadow-sm sm:p-7">
-            <div className="border-b pb-4">
-              <h2 className="text-xl font-bold">تنظیمات پایه کلینیک</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
+            <div className="border-b border-emerald-200/60 pb-4">
+              <h2 className="text-lg font-bold text-emerald-950">
+                تنظیمات پایه کلینیک
+              </h2>
+              <p className="mt-1 text-xs text-muted-foreground">
                 اطلاعات هویتی و راه‌های ارتباطی کلینیک را وارد کنید.
               </p>
             </div>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="clinicName">نام کلینیک</Label>
-                <Input id="clinicName" {...form.register("clinicName")} />
+                <Label htmlFor="clinicName" className="text-xs font-medium">
+                  نام کلینیک
+                </Label>
+                <Input
+                  id="clinicName"
+                  className="h-9 bg-white border-emerald-200 focus-visible:ring-emerald-500"
+                  {...form.register("clinicName")}
+                />
                 {form.formState.errors.clinicName && (
-                  <p className="text-sm text-destructive">
+                  <p className="text-xs text-destructive">
                     {form.formState.errors.clinicName.message}
                   </p>
                 )}
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="phone">شماره تماس</Label>
+                  <Label htmlFor="phone" className="text-xs font-medium">
+                    شماره تماس
+                  </Label>
                   <Input
                     id="phone"
                     dir="ltr"
-                    className="text-left"
+                    className="h-9 text-left font-mono text-xs bg-white border-emerald-200 focus-visible:ring-emerald-500"
                     {...form.register("phone")}
                   />
                   {form.formState.errors.phone && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-xs text-destructive">
                       {form.formState.errors.phone.message}
                     </p>
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="email">ایمیل</Label>
+                  <Label htmlFor="email" className="text-xs font-medium">
+                    ایمیل
+                  </Label>
                   <Input
                     id="email"
                     dir="ltr"
-                    className="text-left"
+                    className="h-9 text-left font-mono text-xs bg-white border-emerald-200 focus-visible:ring-emerald-500"
                     {...form.register("email")}
                   />
                   {form.formState.errors.email && (
-                    <p className="text-sm text-destructive">
+                    <p className="text-xs text-destructive">
                       {form.formState.errors.email.message}
                     </p>
                   )}
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="address">آدرس</Label>
-                <Input id="address" {...form.register("address")} />
+                <Label htmlFor="address" className="text-xs font-medium">
+                  آدرس
+                </Label>
+                <Input
+                  id="address"
+                  className="h-9 bg-white border-emerald-200 focus-visible:ring-emerald-500"
+                  {...form.register("address")}
+                />
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="instagram">آیدی اینستاگرام</Label>
+                  <Label htmlFor="instagram" className="text-xs font-medium">
+                    آیدی اینستاگرام
+                  </Label>
                   <Input
                     id="instagram"
                     dir="ltr"
-                    className="text-left"
+                    className="h-9 text-left font-mono text-xs bg-white border-emerald-200 focus-visible:ring-emerald-500"
                     placeholder="@username"
                     {...form.register("instagram")}
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="workingHours">ساعات کاری (نمایشی)</Label>
+                  <Label htmlFor="workingHours" className="text-xs font-medium">
+                    ساعات کاری (نمایشی)
+                  </Label>
                   <Input
                     id="workingHours"
+                    className="h-9 bg-white border-emerald-200 focus-visible:ring-emerald-500"
                     placeholder="شنبه تا چهارشنبه ۹ تا ۱۷"
                     {...form.register("workingHours")}
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="aboutText">متن درباره‌ی ما</Label>
+                <Label htmlFor="aboutText" className="text-xs font-medium">
+                  متن درباره‌ی ما
+                </Label>
                 <textarea
                   id="aboutText"
-                  rows={6}
-                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  rows={5}
+                  className="w-full rounded-md border border-emerald-200 bg-white px-3 py-2 text-xs leading-relaxed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 transition-colors"
                   {...form.register("aboutText")}
                 />
               </div>
@@ -421,24 +467,29 @@ export function SettingsForm({
           </section>
 
           {/* فرم مشاوره */}
-          <section className="space-y-6 rounded-xl border bg-card p-5 shadow-sm sm:p-7">
-            <div className="border-b pb-4">
-              <h2 className="text-xl font-bold">تنظیمات فرم مشاوره</h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
+            <div className="border-b border-emerald-200/60 pb-4">
+              <h2 className="text-lg font-bold text-emerald-950">
+                تنظیمات فرم مشاوره
+              </h2>
+              <p className="mt-1 text-xs text-muted-foreground">
                 متن‌ها و تصویر پس‌زمینه فرم درخواست مشاوره را تنظیم کنید.
               </p>
             </div>
             <div className="space-y-4">
               <Input
                 placeholder="درخواست مشاوره رایگان"
+                className="h-9 bg-white border-emerald-200 focus-visible:ring-emerald-500"
                 {...form.register("consultationTitle")}
               />
               <Input
                 placeholder="تنها سه قدم تا رزرو وقت"
+                className="h-9 bg-white border-emerald-200 focus-visible:ring-emerald-500"
                 {...form.register("consultationSubtitle")}
               />
               <Input
                 placeholder="ثبت درخواست"
+                className="h-9 bg-white border-emerald-200 focus-visible:ring-emerald-500"
                 {...form.register("consultationButtonText")}
               />
               <ImageUploadField
@@ -454,14 +505,14 @@ export function SettingsForm({
             </div>
           </section>
 
-          {/* پس‌زمینه‌ی بخش‌های صفحه اصلی — جدید */}
-          <section className="space-y-6 rounded-xl border bg-card p-5 shadow-sm sm:p-7">
-            <div className="border-b pb-4">
-              <h2 className="flex items-center gap-2 text-xl font-bold">
-                <ImageIcon className="h-5 w-5 text-primary" />
+          {/* پس‌زمینه‌ی بخش‌های صفحه اصلی */}
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
+            <div className="border-b border-emerald-200/60 pb-4">
+              <h2 className="flex items-center gap-2 text-lg font-bold text-emerald-950">
+                <ImageIcon className="h-5 w-5 text-emerald-700" />
                 پس‌زمینه‌ی بخش‌های صفحه اصلی
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mt-1 text-xs text-muted-foreground">
                 تصویر پس‌زمینه‌ی هر بخش را که در صفحه اصلی نمایش داده می‌شود
                 تنظیم کنید.
               </p>
@@ -497,16 +548,17 @@ export function SettingsForm({
                 }
                 folder="settings/backgrounds"
               />
-          
             </div>
           </section>
 
-          {/* ویدئو تستیمونیال‌ها — جدید (چون Schema داشت ولی UI نداشت) */}
-          <section className="space-y-6 rounded-xl border bg-card p-5 shadow-sm sm:p-7">
-            <div className="flex items-center justify-between border-b pb-4">
+          {/* ویدئو تستیمونیال‌ها */}
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
+            <div className="flex items-center justify-between border-b border-emerald-200/60 pb-4">
               <div>
-                <h2 className="text-xl font-bold">ویدئوهای نظرات مراجعین</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <h2 className="text-lg font-bold text-emerald-950">
+                  ویدئوهای نظرات مراجعین
+                </h2>
+                <p className="mt-1 text-xs text-muted-foreground">
                   ویدئوهای رضایت مراجعین که در صفحه اصلی نمایش داده می‌شوند.
                 </p>
               </div>
@@ -514,6 +566,7 @@ export function SettingsForm({
                 type="button"
                 variant="outline"
                 size="sm"
+                className="h-8 text-xs bg-white border-emerald-200 hover:bg-emerald-100/70 hover:text-emerald-900"
                 onClick={() =>
                   appendVideo({
                     id: crypto.randomUUID(),
@@ -526,13 +579,13 @@ export function SettingsForm({
                   })
                 }
               >
-                <Plus className="ml-2 h-4 w-4" />
+                <Plus className="ml-1.5 h-3.5 w-3.5" />
                 افزودن ویدئو
               </Button>
             </div>
 
             {videoFields.length === 0 && (
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs text-muted-foreground py-1">
                 هنوز ویدئویی اضافه نشده است.
               </p>
             )}
@@ -541,16 +594,18 @@ export function SettingsForm({
               {videoFields.map((field, index) => (
                 <div
                   key={field.id}
-                  className="space-y-3 rounded-lg border bg-muted/30 p-4"
+                  className="space-y-3.5 rounded-lg border border-emerald-200/60 bg-white/80 p-4 transition-colors hover:bg-emerald-50/50"
                 >
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex-1 space-y-2">
                       <Input
                         placeholder="نام مراجع"
+                        className="h-8 text-xs bg-white border-emerald-200"
                         {...form.register(`videoTestimonials.${index}.name`)}
                       />
                       <Input
                         placeholder="توضیح کوتاه"
+                        className="h-8 text-xs bg-white border-emerald-200"
                         {...form.register(
                           `videoTestimonials.${index}.description`,
                         )}
@@ -560,9 +615,10 @@ export function SettingsForm({
                       type="button"
                       variant="ghost"
                       size="icon"
+                      className="h-8 w-8 shrink-0 hover:bg-destructive/10"
                       onClick={() => removeVideo(index)}
                     >
-                      <Trash2 className="h-4 w-4 text-destructive" />
+                      <Trash2 className="h-3.5 w-3.5 text-destructive" />
                     </Button>
                   </div>
                   <div className="grid gap-3 sm:grid-cols-2">
@@ -572,6 +628,7 @@ export function SettingsForm({
                       max={5}
                       dir="ltr"
                       placeholder="امتیاز (۱ تا ۵)"
+                      className="h-8 text-xs font-mono bg-white border-emerald-200"
                       {...form.register(`videoTestimonials.${index}.rating`, {
                         valueAsNumber: true,
                       })}
@@ -579,12 +636,14 @@ export function SettingsForm({
                     <Input
                       dir="ltr"
                       placeholder="مدت زمان (0:45)"
+                      className="h-8 text-xs font-mono bg-white border-emerald-200"
                       {...form.register(`videoTestimonials.${index}.duration`)}
                     />
                   </div>
                   <Input
                     dir="ltr"
                     placeholder="آدرس ویدئو (اختیاری)"
+                    className="h-8 text-xs font-mono bg-white border-emerald-200"
                     {...form.register(`videoTestimonials.${index}.videoUrl`)}
                   />
                   <ImageUploadField
@@ -607,44 +666,50 @@ export function SettingsForm({
           </section>
 
           {/* مختصات نقشه */}
-          <section className="space-y-6 rounded-xl border bg-card p-5 shadow-sm sm:p-7">
-            <div className="border-b pb-4">
-              <h2 className="flex items-center gap-2 text-xl font-bold">
-                <MapPin className="h-5 w-5 text-primary" />
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
+            <div className="border-b border-emerald-200/60 pb-4">
+              <h2 className="flex items-center gap-2 text-lg font-bold text-emerald-950">
+                <MapPin className="h-5 w-5 text-emerald-700" />
                 مختصات نقشه
               </h2>
-              <p className="mt-1 text-sm text-muted-foreground">
+              <p className="mt-1 text-xs text-muted-foreground">
                 برای نمایش موقعیت کلینیک روی نقشه، مختصات را وارد کنید.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="space-y-2">
-                <Label htmlFor="latitude">عرض جغرافیایی (Latitude)</Label>
+                <Label htmlFor="latitude" className="text-xs font-medium">
+                  عرض جغرافیایی (Latitude)
+                </Label>
                 <Input
                   id="latitude"
                   dir="ltr"
-                  className="text-left font-mono text-sm"
+                  className="h-9 text-left font-mono text-xs bg-white border-emerald-200 focus-visible:ring-emerald-500"
                   placeholder="29.626831"
                   {...form.register("latitude")}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="longitude">طول جغرافیایی (Longitude)</Label>
+                <Label htmlFor="longitude" className="text-xs font-medium">
+                  طول جغرافیایی (Longitude)
+                </Label>
                 <Input
                   id="longitude"
                   dir="ltr"
-                  className="text-left font-mono text-sm"
+                  className="h-9 text-left font-mono text-xs bg-white border-emerald-200 focus-visible:ring-emerald-500"
                   placeholder="52.498788"
                   {...form.register("longitude")}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="mapZoom">بزرگنمایی نقشه (Zoom)</Label>
+                <Label htmlFor="mapZoom" className="text-xs font-medium">
+                  بزرگنمایی نقشه (Zoom)
+                </Label>
                 <Input
                   id="mapZoom"
                   type="number"
                   dir="ltr"
-                  className="text-left font-mono text-sm"
+                  className="h-9 text-left font-mono text-xs bg-white border-emerald-200 focus-visible:ring-emerald-500"
                   placeholder="16"
                   min={1}
                   max={22}
@@ -655,11 +720,11 @@ export function SettingsForm({
           </section>
 
           {/* ذخیره */}
-          <section className="rounded-xl border bg-card p-5 shadow-sm">
+          <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
             <Button
               type="submit"
               disabled={isPending || isUploadingBanners}
-              className="w-full px-8 sm:w-auto"
+              className="w-full px-8 sm:w-auto transition-all shadow-sm hover:shadow bg-emerald-700 hover:bg-emerald-800 text-white"
             >
               {isPending ? "در حال ذخیره..." : "ذخیره تنظیمات"}
             </Button>

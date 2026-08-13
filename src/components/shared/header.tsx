@@ -9,60 +9,70 @@ import { logoutAction } from "@/features/auth/actions/login.action";
 import { auth } from "@/lib/auth";
 
 export async function Header() {
-  // گرفتن اطلاعات کاربر لاگین شده
+  // گرفتن اطلاعات جلسه کاربر
   const session = await auth();
-  const isAuthenticated = !!session?.user;
-  const adminName = session?.user?.name || "کاربر";
-  return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* ===== سمت چپ: لوگو + (در موبایل) دکمه همبرگر ===== */}
-        <div className="flex items-center gap-2 md:gap-4">
-          {/* دکمه همبرگر (فقط در موبایل) */}
+  const user = session?.user;
+  const isAuthenticated = !!user;
 
-          <Link href={PUBLIC_ROUTES.home} className="flex items-center gap-2">
-            <Image
-              src={Logo1}
-              alt="Logo"
-              width={32}
-              height={32}
-              className="h-12 w-12 rounded-full"
-            />
+  return (
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-md transition-all">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+        
+        {/* ===== سمت راست (در RTL): لوگو ===== */}
+        <div className="flex items-center gap-3">
+          <Link 
+            href={PUBLIC_ROUTES.home} 
+            className="flex items-center gap-2.5 transition-transform hover:scale-105"
+          >
+            <div className="relative h-10 w-10 overflow-hidden rounded-full ring-2 ring-primary/20 shadow-sm">
+              <Image
+                src={Logo1}
+                alt="Logo"
+                fill
+                sizes="40px"
+                className="object-cover"
+                priority
+              />
+            </div>
           </Link>
         </div>
 
-        {/* ===== وسط: ناوبری اصلی (فقط در دسکتاپ) ===== */}
-        <nav className="hidden md:flex items-center gap-6">
+        {/* ===== وسط: ناوبری اصلی (فقط دسکتاپ) ===== */}
+        <nav className="hidden md:flex items-center gap-8">
           {PUBLIC_NAV_ITEMS.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="relative py-1 text-sm font-medium text-muted-foreground transition-colors hover:text-primary after:absolute after:bottom-0 after:right-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all hover:after:w-full"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        {/* ===== سمت راست: دکمه رزرو نوبت + UserNav ===== */}
-        <div className="flex items-center gap-2 md:gap-4">
+        {/* ===== سمت چپ (در RTL): دکمه رزرو + پروفایل کاربر + منوی موبایل ===== */}
+        <div className="flex items-center gap-2.5 md:gap-4">
           <Button
             asChild
             variant="default"
             size="sm"
-            className="whitespace-nowrap"
+            className="rounded-full px-5 font-medium shadow-md shadow-primary/20 transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-primary/30"
           >
             <Link href={PUBLIC_ROUTES.appointment}>رزرو نوبت</Link>
           </Button>
+
+          {/*  پاس دادن کامل شیء user جهت بررسی نقش ADMIN در دراپ‌داون */}
           <UserNav
-            adminName={adminName}
+         
             isAuthenticated={isAuthenticated}
             logoutAction={logoutAction}
           />
+           
           <div className="md:hidden">
             <MobileNav />
           </div>
         </div>
+
       </div>
     </header>
   );

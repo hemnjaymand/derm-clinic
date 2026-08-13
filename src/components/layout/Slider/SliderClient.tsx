@@ -24,6 +24,7 @@ type Slide = {
 // ============================================================
 export default function SliderClient({ slides }: { slides: Slide[] }) {
   console.log("About banner URL:", slides[0]?.imageUrl);
+
   // ==========================================================
   //  تنظیمات Embla
   // ==========================================================
@@ -125,45 +126,44 @@ export default function SliderClient({ slides }: { slides: Slide[] }) {
       {/* ==========  محفظه اسلایدر  ========== */}
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
-          {slides.map((slide,index) => (
+          {slides.map((slide, index) => (
             <div
               key={slide.id}
               className="relative h-75 min-w-0 flex-[0_0_100%] md:h-125"
             >
               {/* تصویر پس‌زمینه */}
               <div className="absolute inset-0">
-               <div className="absolute inset-0">
                 <Image
                   src={slide.imageUrl}
                   alt={slide.title || "بنر کلینیک"}
                   fill
                   sizes="100vw"
-                  priority={index === 0} 
-                  unoptimized 
+                  priority={index === 0}
+                  unoptimized
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-black/40" />
-              </div>
-                {/* اوورلی تیره */}
-                <div className="absolute inset-0 bg-black/40" />
+                {/*  گرادینت تاریک به جای رنگ ثابت برای زیبایی بیشتر و خوانایی متن */}
+                <div className="absolute inset-0 bg-gradient-to-l from-black/80 via-black/40 to-transparent" />
               </div>
 
-              {/* محتوای متنی */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white">
+              {/*محتوای متنی */}
+              <div className="absolute inset-0 flex flex-col items-start justify-end pb-2 px-6 text-right text-white md:px-16 lg:px-24">
                 {slide.title && (
-                  <h1 className="mb-3 text-3xl font-bold drop-shadow-lg md:text-5xl">
+                  <h1 className="mb-4 max-w-2xl text-3xl font-extrabold drop-shadow-xl md:text-5xl lg:text-6xl">
                     {slide.title}
                   </h1>
                 )}
+
                 {slide.subtitle && (
-                  <p className="mb-6 max-w-2xl text-base drop-shadow-lg md:text-xl">
+                  <p className="mb-8 max-w-xl text-base font-medium leading-relaxed drop-shadow-lg md:text-lg lg:text-xl text-gray-100">
                     {slide.subtitle}
                   </p>
                 )}
+
                 {slide.ctaText && slide.ctaLink && (
                   <Link
                     href={slide.ctaLink}
-                    className="rounded-full bg-secondary px-8 py-3 text-sm font-semibold text-secondary-foreground shadow-lg transition-all hover:bg-accent hover:scale-105 active:scale-95"
+                    className="inline-flex items-center justify-center rounded-xl bg-secondary px-8 py-3.5 text-base font-bold text-secondary-foreground shadow-xl transition-all duration-300 hover:-translate-y-1 hover:bg-secondary/90 hover:shadow-secondary/30 active:scale-95"
                   >
                     {slide.ctaText}
                   </Link>

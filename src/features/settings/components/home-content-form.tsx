@@ -150,148 +150,193 @@ export function HomeContentForm({
   }
 
   return (
-    <form
-      onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-      className="space-y-10"
-      dir="rtl"
-    >
-      {/* فیلد مخفی برای id — بدون این، سرور هیچ‌وقت Validation رو رد می‌کرد */}
-      <input type="hidden" {...form.register("serviceDetail.id")} />
+  <form
+    onSubmit={form.handleSubmit(onSubmit, onInvalid)}
+    className="space-y-10"
+    dir="rtl"
+  >
+    {/* فیلد مخفی برای id */}
+    <input type="hidden" {...form.register("serviceDetail.id")} />
 
-      <section className="space-y-3">
-        <div className="flex items-center justify-between">
-          <h2 className="font-medium">ویژگی‌ها (Features)</h2>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              featuresArray.append({
-                id: crypto.randomUUID(),
-                title: "",
-                description: "",
-              })
-            }
-          >
-            <Plus className="ml-2 h-4 w-4" />
-            افزودن
-          </Button>
+    {/* ===== بخش ویژگی‌ها (Features) ===== */}
+    <section className="space-y-4 rounded-2xl border border-border/40 bg-card/30 p-5 shadow-sm md:p-6">
+      <div className="flex items-center justify-between border-b border-border/40 pb-4">
+        <div>
+          <h2 className="text-base font-bold text-foreground">ویژگی‌ها (Features)</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">افزودن ویژگی‌های کلیدی خدمات</p>
         </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            featuresArray.append({
+              id: crypto.randomUUID(),
+              title: "",
+              description: "",
+              icon: "",
+            })
+          }
+          className="gap-2 rounded-xl shadow-xs  "
+        >
+          <Plus className="h-4 w-4" />
+          افزودن ویژگی
+        </Button>
+      </div>
+
+      <div className="space-y-3">
         {featuresArray.fields.map((field, index) => (
           <div
             key={field.id}
-            className="flex items-start gap-2 rounded-md border p-3"
+            className="flex items-start gap-3 rounded-xl border border-border/60 bg-card/30 p-4 shadow-xs transition-all"
           >
-            <div className="flex-1 space-y-2">
+            <div className="flex-1 space-y-3">
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Input
+                  placeholder="عنوان ویژگی"
+                  className="rounded-xl"
+                  {...form.register(`features.${index}.title`)}
+                />
+                <Input
+                  placeholder="نام آیکون (اختیاری)"
+                  className="rounded-xl"
+                  dir="ltr"
+                  {...form.register(`features.${index}.icon`)}
+                />
+              </div>
               <Input
-                placeholder="عنوان"
-                {...form.register(`features.${index}.title`)}
-              />
-              <Input
-                placeholder="توضیح"
+                placeholder="توضیح کوتاه"
+                className="rounded-xl"
                 {...form.register(`features.${index}.description`)}
-              />
-              <Input
-                placeholder="نام آیکون (اختیاری)"
-                {...form.register(`features.${index}.icon`)}
               />
             </div>
             <Button
               type="button"
               variant="ghost"
               size="icon"
+              className="mt-1 h-9 w-9 rounded-xl hover:bg-destructive/10"
               onClick={() => featuresArray.remove(index)}
             >
               <Trash2 className="h-4 w-4 text-destructive" />
             </Button>
           </div>
         ))}
-      </section>
+      </div>
+    </section>
 
-      <section className="space-y-3 border-t pt-6">
-        <h2 className="font-medium">خدمت ویژه‌ی نمایش در صفحه اصلی</h2>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Input
-            placeholder="عنوان"
-            {...form.register("serviceDetail.title")}
-          />
-          <Input
-            placeholder="زمان بهبودی"
-            {...form.register("serviceDetail.recoveryTime")}
-          />
-          <Input
-            placeholder="نیاز به تکرار"
-            {...form.register("serviceDetail.needsRenewal")}
-          />
-          <Input
-            placeholder="نیاز به بی‌حسی"
-            {...form.register("serviceDetail.needsAnesthesia")}
-          />
-          <Input
-            placeholder="ماندگاری"
-            {...form.register("serviceDetail.longevity")}
-          />
-          <Input
-            placeholder="متن دکمه"
-            {...form.register("serviceDetail.ctaText")}
-          />
-          <Input
-            placeholder="لینک دکمه"
-            dir="ltr"
-            {...form.register("serviceDetail.ctaLink")}
-          />
-          <Input
-            placeholder="نام پزشک"
-            {...form.register("serviceDetail.doctorName")}
-          />
-          <Input
-            placeholder="عنوان پزشک"
-            {...form.register("serviceDetail.doctorTitle")}
-          />
-        </div>
-        <textarea
-          placeholder="توضیحات کامل"
-          rows={3}
-          className="flex w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
-          {...form.register("serviceDetail.description")}
+    {/* ===== بخش خدمت ویژه‌ی صفحه اصلی ===== */}
+    <section className="space-y-4 rounded-2xl border border-border/40 bg-card/30 p-5 shadow-sm md:p-6">
+      <div className="border-b border-border/40 pb-4">
+        <h2 className="text-base font-bold text-foreground">خدمت ویژه‌ی نمایش در صفحه اصلی</h2>
+        <p className="text-xs text-muted-foreground mt-0.5">مشخصات تکمیلی بخش ویژه کلینیک</p>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Input
+          placeholder="عنوان"
+          className="rounded-xl"
+          {...form.register("serviceDetail.title")}
         />
-      </section>
-      <section className="space-y-3 border-t pt-6">
-        <ImageUploadField
-          label="تصویر پس‌زمینه‌ی این بخش"
-          value={form.watch("serviceDetail.backgroundImage") || ""}
-          onChange={(url) =>
-            form.setValue("serviceDetail.backgroundImage", url, {
-              shouldDirty: true,
-            })
+        <Input
+          placeholder="زمان بهبودی"
+          className="rounded-xl"
+          {...form.register("serviceDetail.recoveryTime")}
+        />
+        <Input
+          placeholder="نیاز به تکرار"
+          className="rounded-xl"
+          {...form.register("serviceDetail.needsRenewal")}
+        />
+        <Input
+          placeholder="نیاز به بی‌حسی"
+          className="rounded-xl"
+          {...form.register("serviceDetail.needsAnesthesia")}
+        />
+        <Input
+          placeholder="ماندگاری"
+          className="rounded-xl"
+          {...form.register("serviceDetail.longevity")}
+        />
+        <Input
+          placeholder="متن دکمه"
+          className="rounded-xl"
+          {...form.register("serviceDetail.ctaText")}
+        />
+        <Input
+          placeholder="لینک دکمه"
+          className="rounded-xl"
+          dir="ltr"
+          {...form.register("serviceDetail.ctaLink")}
+        />
+        <Input
+          placeholder="نام پزشک"
+          className="rounded-xl"
+          {...form.register("serviceDetail.doctorName")}
+        />
+        <Input
+          placeholder="عنوان پزشک"
+          className="rounded-xl sm:col-span-2"
+          {...form.register("serviceDetail.doctorTitle")}
+        />
+      </div>
+
+      <textarea
+        placeholder="توضیحات کامل"
+        rows={4}
+        className="flex w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/20"
+        {...form.register("serviceDetail.description")}
+      />
+    </section>
+
+    {/* ===== تصویر پس‌زمینه ===== */}
+    <section className="space-y-4 rounded-2xl border border-border/40 bg-card/30 p-5 shadow-sm md:p-6">
+      <div className="border-b border-border/40 pb-4">
+        <h2 className="text-base font-bold text-foreground">تصویر پس‌زمینه</h2>
+      </div>
+      <ImageUploadField
+        label="تصویر پس‌زمینه‌ی این بخش"
+        value={form.watch("serviceDetail.backgroundImage") || ""}
+        onChange={(url) =>
+          form.setValue("serviceDetail.backgroundImage", url, {
+            shouldDirty: true,
+          })
+        }
+        folder="settings/service-detail"
+      />
+    </section>
+
+    {/* ===== برچسب‌های خدمات ===== */}
+    <section className="space-y-4 rounded-2xl border border-border/40 bg-card/30 p-5 shadow-sm md:p-6">
+      <div className="flex items-center justify-between border-b border-border/40 pb-4">
+        <div>
+          <h2 className="text-base font-bold text-foreground">برچسب‌های خدمات</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">تگ‌های فیلتر خدمات در صفحه</p>
+        </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            tagsArray.append({ id: crypto.randomUUID(), label: "", href: "" })
           }
-          folder="settings/service-detail"
-        />
-      </section>
+          className="gap-2 rounded-xl shadow-xs"
+        >
+          <Plus className="h-4 w-4" />
+          افزودن برچسب
+        </Button>
+      </div>
 
-      <section className="space-y-3 border-t pt-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-medium">برچسب‌های خدمات</h2>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              tagsArray.append({ id: crypto.randomUUID(), label: "", href: "" })
-            }
-          >
-            <Plus className="ml-2 h-4 w-4" />
-            افزودن
-          </Button>
-        </div>
+      <div className="space-y-3">
         {tagsArray.fields.map((field, index) => (
-          <div key={field.id} className="flex items-center gap-2">
+          <div key={field.id} className="flex items-center gap-3 rounded-xl border border-border/60 bg-card/30 p-3 shadow-xs">
             <Input
               placeholder="عنوان"
+              className="rounded-xl"
               {...form.register(`serviceTags.${index}.label`)}
             />
             <Input
               placeholder="لینک"
+              className="rounded-xl"
               dir="ltr"
               {...form.register(`serviceTags.${index}.href`)}
             />
@@ -299,45 +344,56 @@ export function HomeContentForm({
               type="button"
               variant="ghost"
               size="icon"
+              className="h-9 w-9 rounded-xl hover:bg-destructive/10"
               onClick={() => tagsArray.remove(index)}
             >
               <Trash2 className="h-4 w-4 text-destructive" />
             </Button>
           </div>
         ))}
-      </section>
+      </div>
+    </section>
 
-      <section className="space-y-3 border-t pt-6">
-        <div className="flex items-center justify-between">
-          <h2 className="font-medium">نمونه‌کارهای قبل/بعد</h2>
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            onClick={() =>
-              casesArray.append({
-                id: crypto.randomUUID(),
-                name: "",
-                service: "",
-                beforeImage: "",
-                afterImage: "",
-              })
-            }
-          >
-            <Plus className="ml-2 h-4 w-4" />
-            افزودن
-          </Button>
+    {/* ===== نمونه‌کارهای قبل/بعد ===== */}
+    <section className="space-y-4 rounded-2xl border border-border/40 bg-card/30 p-5 shadow-sm md:p-6">
+      <div className="flex items-center justify-between border-b border-border/40 pb-4">
+        <div>
+          <h2 className="text-base font-bold text-foreground">نمونه‌کارهای قبل/بعد</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">مدیریت تصاویر گالری نتایج مراجعین</p>
         </div>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() =>
+            casesArray.append({
+              id: crypto.randomUUID(),
+              name: "",
+              service: "",
+              beforeImage: "",
+              afterImage: "",
+            })
+          }
+          className="gap-2 rounded-xl shadow-xs"
+        >
+          <Plus className="h-4 w-4" />
+          افزودن نمونه‌کار
+        </Button>
+      </div>
+
+      <div className="space-y-4">
         {casesArray.fields.map((field, index) => (
-          <div key={field.id} className="space-y-3 rounded-md border p-3">
-            <div className="flex items-start justify-between gap-2">
-              <div className="flex-1 space-y-2">
+          <div key={field.id} className="space-y-4 rounded-2xl border border-border/60 bg-card/30 p-4 shadow-xs">
+            <div className="flex items-start justify-between gap-3">
+              <div className="grid flex-1 gap-3 sm:grid-cols-2">
                 <Input
-                  placeholder="نام (نمایشی)"
+                  placeholder="نام مراجع (نمایشی)"
+                  className="rounded-xl"
                   {...form.register(`recentShowcaseCases.${index}.name`)}
                 />
                 <Input
                   placeholder="نام خدمت"
+                  className="rounded-xl"
                   {...form.register(`recentShowcaseCases.${index}.service`)}
                 />
               </div>
@@ -345,12 +401,13 @@ export function HomeContentForm({
                 type="button"
                 variant="ghost"
                 size="icon"
+                className="h-9 w-9 rounded-xl hover:bg-destructive/10"
                 onClick={() => casesArray.remove(index)}
               >
                 <Trash2 className="h-4 w-4 text-destructive" />
               </Button>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-4 sm:grid-cols-2 pt-2 border-t border-border/40">
               <ImageUploadField
                 label="تصویر قبل"
                 value={
@@ -382,11 +439,20 @@ export function HomeContentForm({
             </div>
           </div>
         ))}
-      </section>
+      </div>
+    </section>
 
-      <Button type="submit" disabled={isPending}>
-        {isPending ? "در حال ذخیره..." : "ذخیره محتوای صفحه اصلی"}
+    {/* دکمه نهایی ارسال */}
+    <div className="sticky bottom-4 z-20 flex justify-end bg-background/80 backdrop-blur-md pt-4 pb-2 border-t border-border/40">
+      <Button 
+        type="submit" 
+        disabled={isPending}
+        size="lg"
+        className="w-full sm:w-auto px-8 rounded-xl shadow-lg transition-all"
+      >
+        {isPending ? "در حال ذخیره تغییرات..." : "ذخیره محتوای صفحه اصلی"}
       </Button>
-    </form>
-  );
-}
+    </div>
+  </form>
+);
+ }

@@ -34,9 +34,7 @@ export function BrandsMarqueeClient({ brands }: { brands: Brand[] }) {
 
   return (
     <div className="relative">
-      <h2 className="mb-8 font-bold text-center text-sm uppercase tracking-wider text-muted-foreground">
-        برندهای معتبر
-      </h2>
+
       <div className="overflow-hidden">
         {/* 
           تغییر کلیدی: اضافه شدن pe-10 md:pe-16 برای جبران فضای خالی گپ 

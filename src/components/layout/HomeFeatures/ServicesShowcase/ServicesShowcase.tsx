@@ -7,22 +7,23 @@ export async function ServicesShowcase() {
     getActiveServices(),
     getSiteSettings(),
   ]);
-   
+
   if (services.length === 0) return null;
 
   return (
-    <section className="container mx-auto px-4 py-16 md:py-20">
-      <div className="mb-12 text-center">
-        <h2 className="text-2xl font-bold text-foreground md:text-3xl">
+    <section className="container mx-auto px-3  md:px-4 md:py-20">
+      <div className="mb-8 text-center md:mb-12">
+        {/* <h2 className="text-xl font-bold text-foreground md:text-3xl">
           {settings.clinicName}
         </h2>
-        <p className="mt-2 text-muted-foreground">
+        <p className="mt-1.5 text-xs text-muted-foreground md:text-base">
           درمانگاه تخصصی پوست، مو و زیبایی
-        </p>
-        <div className="mx-auto mt-3 h-1 w-16 rounded-full bg-primary" />
+        </p> */}
+        <div className="mx-auto mt-2.5 h-1 w-12 rounded-full bg-primary md:w-16" />
       </div>
 
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      {/*  تنظیم ۲ ستون در موبایل (grid-cols-2) و ۳ ستون در دسکتاپ (lg:grid-cols-3) */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3 lg:gap-8">
         {services.slice(0, 6).map((service) => (
           <ServiceShowcaseCard
             key={service.id}

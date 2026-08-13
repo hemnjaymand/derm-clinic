@@ -13,9 +13,9 @@ const Homepage = () => {
   return (
     <main className="min-h-screen">
       <HeroSlider />
+      <BrandsMarquee />
       <ServicesShowcase />
       <VideoTestimonials />
-      <BrandsMarquee />
 
       <div className="container mx-auto space-y-20 px-4 py-16 md:space-y-28 md:py-24">
         <ServiceDetailSection />

@@ -1,5 +1,3 @@
-
-
 import {
   Card,
   CardContent,
@@ -77,93 +75,91 @@ export default async function DashboardPage() {
     ? `${workingHoursToday.openTime} تا ${workingHoursToday.closeTime}`
     : "امروز تعطیل است";
 
-  const totalWorkingHoursNum = workingHoursToday?.isOpen ? "۸ ساعت" : "۰ ساعت"; // یا محاسبه اختلاف زمانی
-
   return (
     <div className="space-y-6" dir="rtl">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">داشبورد مدیریت</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">داشبورد مدیریت</h1>
       </div>
 
       {/* کارت‌های آماری */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="rounded-2xl border border-border/40 bg-card/35 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">نوبت‌های امروز</CardTitle>
-            <Calendar className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">نوبت‌های امروز</CardTitle>
+            <Calendar className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{todaysAppointmentsCount}</div>
-            <p className="text-xs text-muted-foreground">ثبت شده برای امروز</p>
+            <div className="text-2xl font-bold font-mono">{todaysAppointmentsCount}</div>
+            <p className="text-xs text-muted-foreground mt-1">ثبت شده برای امروز</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl border border-border/40 bg-card/35 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">تعداد بیماران</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">تعداد بیماران</CardTitle>
+            <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalPatientsCount}</div>
-            <p className="text-xs text-muted-foreground">کل بیماران ثبت‌شده</p>
+            <div className="text-2xl font-bold font-mono">{totalPatientsCount}</div>
+            <p className="text-xs text-muted-foreground mt-1">کل بیماران ثبت‌شده</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl border border-border/40 bg-card/35 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">ساعات کاری امروز</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">ساعات کاری امروز</CardTitle>
+            <Clock className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{workingHoursToday?.isOpen ? "فعال" : "تعطیل"}</div>
-            <p className="text-xs text-muted-foreground">{workingHoursText}</p>
+            <p className="text-xs text-muted-foreground mt-1">{workingHoursText}</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl border border-border/40 bg-card/35 shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">درآمد ماهانه</CardTitle>
-            <DollarSign className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">درآمد ماهانه</CardTitle>
+            <DollarSign className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold font-mono">
               {monthlyRevenue.toLocaleString("fa-IR")}
             </div>
-            <p className="text-xs text-muted-foreground">تومان</p>
+            <p className="text-xs text-muted-foreground mt-1">تومان</p>
           </CardContent>
         </Card>
       </div>
 
       {/* بخش پایینی: نوبت‌های اخیر و دسترسی سریع */}
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+        <Card className="rounded-2xl border border-border/40 bg-card/35 shadow-sm">
           <CardHeader>
-            <CardTitle>نوبت‌های اخیر</CardTitle>
+            <CardTitle className="text-lg font-bold">نوبت‌های اخیر</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {recentAppointments.length === 0 ? (
-                <p className="text-sm text-muted-foreground text-center py-4">
+                <p className="text-sm text-muted-foreground text-center py-6">
                   هنوز نوبتی ثبت نشده است.
                 </p>
               ) : (
                 recentAppointments.map((app) => (
-                  <div key={app.id} className="flex items-center justify-between border-b pb-2 last:border-0 last:pb-0">
+                  <div key={app.id} className="flex items-center justify-between border-b border-border/40 pb-3 last:border-0 last:pb-0">
                     <div>
-                      <p className="font-medium">
+                      <p className="font-medium text-foreground">
                         {app.patient ? `${app.patient.firstName} ${app.patient.lastName}` : "بیمار ناشناس"}
                       </p>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-xs text-muted-foreground mt-0.5" dir="ltr">
                         {app.startTime} - {app.service?.title ?? "خدمت"}
                       </p>
                     </div>
                     <span
-                      className={`text-sm font-medium ${
+                      className={`text-xs font-medium px-2.5 py-1 rounded-xl ${
                         app.status === "CONFIRMED" || app.status === "COMPLETED"
-                          ? "text-green-600"
+                          ? "bg-green-500/10 text-green-600 dark:text-green-400"
                           : app.status === "PENDING"
-                          ? "text-yellow-600"
-                          : "text-red-600"
+                          ? "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400"
+                          : "bg-red-500/10 text-red-600 dark:text-red-400"
                       }`}
                     >
                       {app.status === "PENDING"
@@ -181,21 +177,21 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="rounded-2xl border border-border/40 bg-card/35 shadow-sm">
           <CardHeader>
-            <CardTitle>دسترسی سریع</CardTitle>
+            <CardTitle className="text-lg font-bold">دسترسی سریع</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-2">
-            <Button variant="outline" className="w-full justify-start" asChild>
+          <CardContent className="grid gap-3">
+            <Button variant="outline" className="w-full justify-start rounded-xl border-border/40 bg-card/50 hover:bg-muted/50 transition-all" asChild>
               <Link href="/dashboard/appointments">مدیریت نوبت‌ها</Link>
             </Button>
-            <Button variant="outline" className="w-full justify-start" asChild>
+            <Button variant="outline" className="w-full justify-start rounded-xl border-border/40 bg-card/50 hover:bg-muted/50 transition-all" asChild>
               <Link href="/dashboard/patients">مدیریت بیماران</Link>
             </Button>
-            <Button variant="outline" className="w-full justify-start" asChild>
+            <Button variant="outline" className="w-full justify-start rounded-xl border-border/40 bg-card/50 hover:bg-muted/50 transition-all" asChild>
               <Link href="/dashboard/services">مدیریت خدمات</Link>
             </Button>
-            <Button variant="outline" className="w-full justify-start" asChild>
+            <Button variant="outline" className="w-full justify-start rounded-xl border-border/40 bg-card/50 hover:bg-muted/50 transition-all" asChild>
               <Link href="/dashboard/settings">تنظیمات</Link>
             </Button>
           </CardContent>

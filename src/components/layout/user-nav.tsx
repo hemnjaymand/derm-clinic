@@ -2,7 +2,7 @@
 
 import { useTransition } from "react";
 import Link from "next/link";
-import { LogOut, LogIn, User, Loader2 } from "lucide-react";
+import { LogOut, LogIn, User, Loader2, LayoutDashboard } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -27,6 +27,9 @@ export function UserNav({ adminName, isAuthenticated, logoutAction }: UserNavPro
 
   const initials = adminName ? adminName.slice(0, 1).toUpperCase() : "";
 
+  // 🟢 تعیین آدرس پویا: اگر لاگین بود به دشبورد و در غیر این صورت به صفحه اصلی
+  const targetRoute = isAuthenticated ? "/dashboard" : "/";
+
   // تابع هندل کردن کلیک خروج
   const handleLogout = () => {
     startTransition(() => {
@@ -35,7 +38,7 @@ export function UserNav({ adminName, isAuthenticated, logoutAction }: UserNavPro
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu dir="rtl">
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
@@ -61,7 +64,8 @@ export function UserNav({ adminName, isAuthenticated, logoutAction }: UserNavPro
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align="end" className="w-56" >
-        {isAuthenticated ? (
+        {/* بخش نمایش اطلاعات کاربر (فقط اگر لاگین باشد) */}
+        {isAuthenticated && (
           <>
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1.5">
@@ -73,25 +77,51 @@ export function UserNav({ adminName, isAuthenticated, logoutAction }: UserNavPro
                 </p>
               </div>
             </DropdownMenuLabel>
-            
             <DropdownMenuSeparator />
-            
-            <DropdownMenuItem
-              disabled={isPending}
-              onClick={handleLogout}
-              className="cursor-pointer gap-2 text-destructive focus:bg-destructive/10 focus:text-destructive data-disabled:opacity-50"
-            >
-              {/* اگر در حال خروج بودیم آیکون لودینگ بچرخد، در غیر این صورت آیکون خروج */}
-              {isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <LogOut className="h-4 w-4" />
-              )}
-              <span className="font-medium">
-                {isPending ? "در حال خروج..." : "خروج از حساب"}
-              </span>
-            </DropdownMenuItem>
           </>
+        )}
+
+        {/*  دکمه بازگشت بە خانە*/}
+        <DropdownMenuItem asChild>
+          <Link 
+            href="/"
+            className="cursor-pointer gap-2 focus:bg-primary/10 focus:text-primary font-medium"
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            <span>صفحە اصلی </span>
+          </Link>
+        </DropdownMenuItem>
+        
+        {/*  دکمه پنل مدیریت با مسیر شرطی (نمایش برای همه، مسیر متفاوت) */}
+        <DropdownMenuItem asChild>
+          <Link 
+            href={targetRoute} 
+            className="cursor-pointer gap-2 focus:bg-primary/10 focus:text-primary font-medium"
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            <span>پنل مدیریت</span>
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        {/* دکمه‌های ورود / خروج شرطی */}
+        {isAuthenticated ? (
+          <DropdownMenuItem
+            disabled={isPending}
+            onClick={handleLogout}
+            className="cursor-pointer gap-2 text-destructive focus:bg-destructive/10 focus:text-destructive data-[disabled]:opacity-50"
+          >
+            {/* اگر در حال خروج بودیم آیکون لودینگ بچرخد، در غیر این صورت آیکون خروج */}
+            {isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <LogOut className="h-4 w-4" />
+            )}
+            <span className="font-medium">
+              {isPending ? "در حال خروج..." : "خروج از حساب"}
+            </span>
+          </DropdownMenuItem>
         ) : (
           <DropdownMenuItem asChild>
             <Link 

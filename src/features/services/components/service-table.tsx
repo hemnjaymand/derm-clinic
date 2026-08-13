@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ServiceFormDialog } from "./service-form-dialog";
 
@@ -44,62 +44,89 @@ export function ServiceTable({ services }: { services: Service[] }) {
 
   if (services.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">هنوز خدمتی ثبت نشده است.</p>
+      <div
+        className="rounded-2xl border border-border/40 bg-card/35 p-8 text-center shadow-sm"
+        dir="rtl"
+      >
+        <p className="text-sm text-muted-foreground">
+          هنوز خدمتی ثبت نشده است.
+        </p>
+      </div>
     );
   }
-return (
-  // ۱. کانتینر اسکرول افقی برای موبایل
-  <div className="w-full overflow-x-auto pb-4">
-    {/* ۲. حداقل عرض (min-w) تا جدول در موبایل فشرده نشود */}
-    <Table dir="rtl" className="w-full min-w-[700px]">
-      <TableHeader>
-        <TableRow>
-          {/* ۳. جلوگیری از شکستن متن‌ها به خط بعد */}
-          <TableHead className="whitespace-nowrap text-right">عنوان</TableHead>
-          <TableHead className="whitespace-nowrap text-right">مدت زمان</TableHead>
-          <TableHead className="whitespace-nowrap text-right">قیمت</TableHead>
-          <TableHead className="whitespace-nowrap text-right">وضعیت</TableHead>
-          <TableHead className="w-24" />
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {services.map((service) => (
-          <TableRow key={service.id}>
-            <TableCell className="font-medium whitespace-nowrap">{service.title}</TableCell>
-            <TableCell className="whitespace-nowrap">{service.durationMin} دقیقه</TableCell>
-            <TableCell className="whitespace-nowrap">
-              {service.price
-                ? `${service.price.toLocaleString("fa-IR")} تومان`
-                : "—"}
-            </TableCell>
-            <TableCell className="whitespace-nowrap">
-              <button
-                disabled={isPending}
-                onClick={() => handleToggle(service)}
-                // ۴. بزرگتر کردن ناحیه کلیک برای موبایل
-                className="inline-block py-1 cursor-pointer"
+
+  return (
+    <div
+      className="rounded-2xl border border-border/40 bg-card/35 shadow-sm overflow-hidden"
+      dir="rtl"
+    >
+      <div className="w-full overflow-x-auto">
+        <Table className="w-full min-w-[700px]">
+          <TableHeader>
+            <TableRow className="border-b border-border/40 hover:bg-transparent">
+              <TableHead className="whitespace-nowrap text-right font-bold text-foreground py-4 px-6">
+                عنوان
+              </TableHead>
+              <TableHead className="whitespace-nowrap text-right font-bold text-foreground py-4 px-6">
+                مدت زمان
+              </TableHead>
+              <TableHead className="whitespace-nowrap text-right font-bold text-foreground py-4 px-6">
+                قیمت
+              </TableHead>
+              <TableHead className="whitespace-nowrap text-right font-bold text-foreground py-4 px-6">
+                وضعیت
+              </TableHead>
+              <TableHead className="w-24 py-4 px-6" />
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {services.map((service) => (
+              <TableRow
+                key={service.id}
+                className="border-b border-border/40 transition-colors hover:bg-muted/50"
               >
-                <Badge variant={service.isActive ? "default" : "secondary"}>
-                  {service.isActive ? "فعال" : "غیرفعال"}
-                </Badge>
-              </button>
-            </TableCell>
-            {/* ۵. تراز کردن دکمه‌های عملیات به انتهای سلول */}
-            <TableCell className="flex items-center justify-end gap-2 whitespace-nowrap">
-              <ServiceFormDialog service={service} />
-              <Button
-                variant="ghost"
-                size="icon"
-                disabled={isPending}
-                onClick={() => handleDelete(service.id)}
-              >
-                <Trash2 className="h-4 w-4 text-destructive" />
-              </Button>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  </div>
-);
+                <TableCell className="font-medium whitespace-nowrap py-4 px-6 text-foreground">
+                  {service.title}
+                </TableCell>
+                <TableCell className="whitespace-nowrap py-4 px-6 font-mono text-xs">
+                  {service.durationMin} دقیقه
+                </TableCell>
+                <TableCell className="whitespace-nowrap py-4 px-6 font-mono text-xs">
+                  {service.price
+                    ? `${service.price.toLocaleString("fa-IR")} تومان`
+                    : "—"}
+                </TableCell>
+                <TableCell className="whitespace-nowrap py-4 px-6">
+                  <button
+                    disabled={isPending}
+                    onClick={() => handleToggle(service)}
+                    className="inline-block py-1 cursor-pointer"
+                  >
+                    <Badge
+                      variant={service.isActive ? "default" : "secondary"}
+                      className="rounded-xl px-2.5 py-1"
+                    >
+                      {service.isActive ? "فعال" : "غیرفعال"}
+                    </Badge>
+                  </button>
+                </TableCell>
+                <TableCell className="flex items-center justify-end gap-2 whitespace-nowrap py-4 px-6">
+                  <ServiceFormDialog service={service} />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    disabled={isPending}
+                    onClick={() => handleDelete(service.id)}
+                    className="rounded-xl hover:bg-destructive/10 transition-colors"
+                  >
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
 }

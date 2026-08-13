@@ -59,16 +59,19 @@ function BannerFieldGroup({
   }
 
   return (
-    <div className="space-y-4 rounded-lg border p-4">
-      <div className="flex items-center justify-between">
-        <h3 className="font-medium">{PAGE_BANNER_LABELS[pageKey]}</h3>
-        <label className="flex cursor-pointer items-center gap-2 text-sm">
-          <input type="checkbox" className="h-4 w-4" {...form.register(`${pageKey}.enabled`)} />
-          فعال
+    <div className="space-y-4 rounded-2xl border border-border/40 bg-card/35 p-5 shadow-sm md:p-6 transition-all">
+      <div className="flex items-center justify-between border-b border-border/40 pb-4">
+        <div>
+          <h3 className="text-base font-bold text-foreground">{PAGE_BANNER_LABELS[pageKey]}</h3>
+          <p className="text-xs text-muted-foreground mt-0.5">مدیریت بنر و اطلاعات این بخش</p>
+        </div>
+        <label className="flex cursor-pointer items-center gap-2.5 rounded-xl border border-border/60 bg-card px-3 py-1.5 text-sm shadow-xs transition hover:border-primary">
+          <input type="checkbox" className="h-4 w-4 rounded border-input text-primary accent-primary" {...form.register(`${pageKey}.enabled`)} />
+          <span className="font-medium">فعال</span>
         </label>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-3">
         <input
           ref={inputRef}
           type="file"
@@ -76,22 +79,36 @@ function BannerFieldGroup({
           className="hidden"
           onChange={handleUpload}
         />
-        <Button type="button" variant="outline" size="sm" onClick={() => inputRef.current?.click()} disabled={isUploading}>
-          <Upload className="ml-2 h-4 w-4" />
+        <Button 
+          type="button" 
+          variant="outline" 
+          size="sm" 
+          onClick={() => inputRef.current?.click()} 
+          disabled={isUploading}
+          className="rounded-xl shadow-xs gap-2"
+        >
+          <Upload className="h-4 w-4" />
           {isUploading ? "در حال آپلود..." : imageUrl ? "تغییر تصویر" : "انتخاب تصویر"}
         </Button>
-        <Button type="button" variant="outline" size="sm" onClick={addByPath}>
-          <Plus className="ml-2 h-4 w-4" />
+        <Button 
+          type="button" 
+          variant="outline" 
+          size="sm" 
+          onClick={addByPath}
+          className="rounded-xl shadow-xs gap-2"
+        >
+          <Plus className="h-4 w-4" />
           افزودن با مسیر
         </Button>
+
         {imageUrl && (
-          <div className="group relative">
+          <div className="group relative overflow-hidden rounded-xl border border-border/60 shadow-xs">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={imageUrl} alt={PAGE_BANNER_LABELS[pageKey]} className="h-14 w-24 rounded object-cover" />
+            <img src={imageUrl} alt={PAGE_BANNER_LABELS[pageKey]} className="h-16 w-28 object-cover transition-transform group-hover:scale-105" />
             <button
               type="button"
               onClick={() => form.setValue(`${pageKey}.imageUrl`, "", { shouldDirty: true })}
-              className="absolute -left-1.5 -top-1.5 rounded-full bg-destructive p-0.5 text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100"
+              className="absolute left-1.5 top-1.5 rounded-full bg-destructive/90 p-1 text-destructive-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:bg-destructive"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -99,22 +116,22 @@ function BannerFieldGroup({
         )}
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <div className="space-y-1">
-          <Label className="text-xs">عنوان</Label>
-          <Input {...form.register(`${pageKey}.title`)} placeholder={PAGE_BANNER_LABELS[pageKey]} />
+      <div className="grid gap-4 sm:grid-cols-2 pt-2">
+        <div className="space-y-1.5">
+          <Label className="text-xs font-medium text-muted-foreground">عنوان</Label>
+          <Input className="rounded-xl" {...form.register(`${pageKey}.title`)} placeholder={PAGE_BANNER_LABELS[pageKey]} />
         </div>
-        <div className="space-y-1">
-          <Label className="text-xs">زیرعنوان</Label>
-          <Input {...form.register(`${pageKey}.subtitle`)} />
+        <div className="space-y-1.5">
+          <Label className="text-xs font-medium text-muted-foreground">زیرعنوان</Label>
+          <Input className="rounded-xl" {...form.register(`${pageKey}.subtitle`)} placeholder="توضیحات کوتاه بنر..." />
         </div>
-        <div className="space-y-1">
-          <Label className="text-xs">متن دکمه (CTA)</Label>
-          <Input {...form.register(`${pageKey}.ctaLabel`)} placeholder="مثلاً: رزرو نوبت" />
+        <div className="space-y-1.5">
+          <Label className="text-xs font-medium text-muted-foreground">متن دکمه (CTA)</Label>
+          <Input className="rounded-xl" {...form.register(`${pageKey}.ctaLabel`)} placeholder="مثلاً: رزرو نوبت" />
         </div>
-        <div className="space-y-1">
-          <Label className="text-xs">آدرس دکمه</Label>
-          <Input dir="ltr" {...form.register(`${pageKey}.ctaHref`)} placeholder="/appointment" />
+        <div className="space-y-1.5">
+          <Label className="text-xs font-medium text-muted-foreground">آدرس دکمه</Label>
+          <Input className="rounded-xl" dir="ltr" {...form.register(`${pageKey}.ctaHref`)} placeholder="/appointment" />
         </div>
       </div>
     </div>
@@ -148,13 +165,23 @@ export function PageBannersForm({ initialData }: { initialData: PageBanners }) {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" dir="rtl">
-      {PAGE_BANNER_KEYS.map((key) => (
-        <BannerFieldGroup key={key} pageKey={key} form={form} />
-      ))}
-      <Button type="submit" disabled={isPending}>
-        {isPending ? "در حال ذخیره..." : "ذخیره بنرها"}
-      </Button>
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" dir="rtl">
+      <div className="space-y-4">
+        {PAGE_BANNER_KEYS.map((key) => (
+          <BannerFieldGroup key={key} pageKey={key} form={form} />
+        ))}
+      </div>
+
+      <div className="sticky bottom-4 z-20 flex justify-end bg-background/80 backdrop-blur-md pt-4 pb-2 border-t border-border/40">
+        <Button 
+          type="submit" 
+          disabled={isPending}
+          size="lg"
+          className="w-full sm:w-auto px-8 rounded-xl shadow-lg transition-all"
+        >
+          {isPending ? "در حال ذخیره..." : "ذخیره بنرها"}
+        </Button>
+      </div>
     </form>
   );
 }

@@ -1,4 +1,3 @@
-// src/components/layout/RecentPatients.tsx
 import { getSiteSettings } from "@/features/settings/actions/settings.actions";
 import { RecentPatientsClient } from "./RecentPatientsClient";
 import { SectionWrapper } from "../../SectionWrapper";
@@ -10,30 +9,33 @@ export async function RecentPatients() {
   const patients = settings.recentShowcaseCases || [];
   const serviceTags = settings.serviceTags || [];
 
-  // اگر هیچ نمونه‌ای وجود نداشت، چیزی نمایش نده
-  // if (patients.length === 0) {
-  //   return null;
-  // }
+  // 🟢 اگر هیچ نمونه‌ای وجود نداشت، کلاً چیزی رندر نشود
+  if (!patients || patients.length === 0) {
+    return null;
+  }
 
   // دریافت پس‌زمینه (اختیاری)
-  const backgroundImage =
-    settings.recentPatientsBackgroundImage || "/images/recent-patients-bg.jpg";
+  const bgImage = settings.recentPatientsBackgroundImage?.trim();
 
   return (
     <SectionWrapper
-      background={{
-        type: "image",
-        value: backgroundImage,
-        overlay: true,
-        overlayOpacity: 30,
-          parallax: false
-      }}
-      className="py-16 md:py-20"
+      background={
+        bgImage
+          ? {
+              type: "image",
+              value: bgImage,
+              overlay: true,
+              overlayOpacity: 30,
+              parallax: false,
+            }
+          : {
+              type: "color",
+              value: "bg-muted/30",
+            }
+      }
+      className="py-16 md:py-24"
     >
-      <RecentPatientsClient
-        patients={patients}
-        serviceTags={serviceTags}
-      />
+      <RecentPatientsClient patients={patients} serviceTags={serviceTags} />
     </SectionWrapper>
   );
 }
