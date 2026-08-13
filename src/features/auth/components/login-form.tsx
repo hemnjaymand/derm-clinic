@@ -29,8 +29,8 @@ export function LoginForm() {
         const result = await loginAction(formData);
 
         if (result.success) {
-          router.push("/dashboard");
-          router.refresh();
+          // ✅ به‌جای router.push از window.location.href استفاده کن
+          window.location.href = "/dashboard";
         } else {
           toast.error(result.error);
         }
@@ -41,12 +41,20 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" dir="rtl">
+    <form
+      onSubmit={form.handleSubmit(onSubmit)}
+      className="space-y-4"
+      dir="rtl"
+    >
       <div className="space-y-2">
         <label htmlFor="phone" className="text-sm font-medium">
           شماره موبایل
         </label>
-        <Input id="phone" placeholder="09xxxxxxxxx" {...form.register("phone")} />
+        <Input
+          id="phone"
+          placeholder="09xxxxxxxxx"
+          {...form.register("phone")}
+        />
         {form.formState.errors.phone && (
           <p className="text-sm text-destructive">
             {form.formState.errors.phone.message}
