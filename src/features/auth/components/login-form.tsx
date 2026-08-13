@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginInput } from "../schemas/login.schema";
 import { loginAction } from "../actions/login.action";
-
+import { signIn } from "next-auth/react";
 export function LoginForm() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -19,27 +19,43 @@ export function LoginForm() {
     defaultValues: { phone: "", password: "" },
   });
 
-  function onSubmit(values: LoginInput) {
-    startTransition(async () => {
-      try {
-        const formData = new FormData();
-        formData.append("phone", values.phone);
-        formData.append("password", values.password);
+  // function onSubmit(values: LoginInput) {
+  //   startTransition(async () => {
+  //     try {
+  //       const formData = new FormData();
+  //       formData.append("phone", values.phone);
+  //       formData.append("password", values.password);
 
-        const result = await loginAction(formData);
+  //       const result = await loginAction(formData);
 
-        if (result.success) {
-          // ✅ به‌جای router.push از window.location.href استفاده کن
-          window.location.href = "/dashboard";
-        } else {
-          toast.error(result.error);
-        }
-      } catch {
-        toast.error("خطایی در ورود رخ داد. دوباره تلاش کنید.");
-      }
+  //       if (result.success) {
+  //         // ✅ به‌جای router.push از window.location.href استفاده کن
+  //         window.location.href = "/dashboard";
+  //       } else {
+  //         toast.error(result.error);
+  //       }
+  //     } catch {
+  //       toast.error("خطایی در ورود رخ داد. دوباره تلاش کنید.");
+  //     }
+  //   });
+  // }
+
+
+function onSubmit(values: LoginInput) {
+  startTransition(async () => {
+    const result = await signIn("credentials", {
+      phone: values.phone,
+      password: values.password,
+      redirect: false,
     });
-  }
 
+    if (result?.error) {
+      toast.error("خطا در ورود");
+    } else {
+      window.location.href = "/dashboard";
+    }
+  });
+}
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
