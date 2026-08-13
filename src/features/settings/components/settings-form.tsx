@@ -232,7 +232,6 @@ export function SettingsForm({
               </div>
             )}
           </section>
-
           {/* برندها */}
           <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
             <div className="flex items-center justify-between border-b border-emerald-200/60 pb-3">
@@ -262,40 +261,72 @@ export function SettingsForm({
               </p>
             )}
             <div className="space-y-3">
-              {brandFields.map((field, index) => (
-                <div
-                  key={field.id}
-                  className="space-y-3 rounded-lg border border-emerald-200/60 bg-white/80 p-3.5 transition-colors hover:bg-emerald-50/50"
-                >
-                  <div className="flex items-center gap-2">
-                    <Input
-                      placeholder="نام برند"
-                      className="h-8 flex-1 text-xs bg-white border-emerald-200"
-                      {...form.register(`brands.${index}.name`)}
+              {brandFields.map((field, index) => {
+                // دریافت مقادیر زنده با form.watch جهت رندر آنی
+                const currentImageUrl = form.watch(`brands.${index}.imageUrl`);
+                const currentBrandName = form.watch(`brands.${index}.name`);
+
+                return (
+                  <div
+                    key={field.id}
+                    className="space-y-3 rounded-lg border border-emerald-200/60 bg-white/80 p-3.5 transition-colors hover:bg-emerald-50/50"
+                  >
+                    <div className="flex items-center gap-2">
+                      <Input
+                        placeholder="نام برند"
+                        className="h-8 flex-1 text-xs bg-white border-emerald-200"
+                        {...form.register(`brands.${index}.name`)}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 shrink-0 hover:bg-destructive/10"
+                        onClick={() => removeBrand(index)}
+                      >
+                        <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                      </Button>
+                    </div>
+
+                    <ImageUploadField
+                      label="لوگو"
+                      aspect="square"
+                      value={currentImageUrl}
+                      onChange={(url) =>
+                        form.setValue(`brands.${index}.imageUrl`, url, {
+                          shouldDirty: true,
+                        })
+                      }
+                      folder="settings/brands"
                     />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 shrink-0 hover:bg-destructive/10"
-                      onClick={() => removeBrand(index)}
-                    >
-                      <Trash2 className="h-3.5 w-3.5 text-destructive" />
-                    </Button>
+
+                    {/* پیش‌نمایش لوگوی آپلود و رندر شده */}
+                    {currentImageUrl && (
+                      <div className="flex items-center gap-3 rounded-md border border-emerald-200/80 bg-emerald-50/50 p-2">
+                        <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-md border border-emerald-300 bg-white">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={currentImageUrl}
+                            alt={currentBrandName || "لوگوی برند"}
+                            className="h-full w-full object-contain p-1"
+                          />
+                        </div>
+                        <div className="flex flex-col text-xs overflow-hidden">
+                          <span className="font-medium text-emerald-950 truncate">
+                            {currentBrandName || "برند بدون نام"}
+                          </span>
+                          <span
+                            className="text-[10px] text-muted-foreground truncate"
+                            dir="ltr"
+                          >
+                            {currentImageUrl}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <ImageUploadField
-                    label="لوگو"
-                    aspect="square"
-                    value={form.watch(`brands.${index}.imageUrl`)}
-                    onChange={(url) =>
-                      form.setValue(`brands.${index}.imageUrl`, url, {
-                        shouldDirty: true,
-                      })
-                    }
-                    folder="settings/brands"
-                  />
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 
