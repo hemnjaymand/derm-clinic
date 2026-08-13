@@ -6,9 +6,10 @@ export async function VideoTestimonials() {
   const settings = await getSiteSettings();
   const videos = settings.videoTestimonials;
 
-  // if (!videos || videos.length === 0) {
-  //   return null;
-  // }
+  // جلوگیری از رندر سکشن اگر هیچ ویدیویی در دیتابیس وجود نداشته باشد
+  if (!videos || videos.length === 0) {
+    return null;
+  }
 
   const backgroundImage =
     settings.videoTestimonialsBackgroundImage || "/images/video-testimonials-bg.jpg";
