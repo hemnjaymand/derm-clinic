@@ -36,7 +36,7 @@ export async function HeroSlider() {
       title: ` ${clinicName}  `,
       subtitle: aboutText,
       ctaText: "دریافت مشاوره",
-      ctaLink: "/consultation",
+      ctaLink: "/",
     }));
   } else if (heroImage) {
     slides = [

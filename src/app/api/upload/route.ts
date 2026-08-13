@@ -224,30 +224,15 @@
 
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import {
-  getStorageProvider,
-  ALLOWED_IMAGE_TYPES,
-  MAX_UPLOAD_SIZE_BYTES,
-} from "@/lib/storage";
+import { getStorageProvider, ALLOWED_MEDIA_TYPES, getMaxSizeForType } from "@/lib/storage";
 
 export const runtime = "nodejs";
-
-// فرمت‌های مجاز ویدئو را اینجا تعریف می‌کنیم (یا می‌توانید در lib/storage اضافه و ایمپورت کنید)
-const ALLOWED_VIDEO_TYPES = [
-  "video/mp4",
-  "video/webm",
-  "video/ogg",
-  "video/quicktime", // برای فایل‌های .mov آیفون
-];
 
 export async function POST(request: Request) {
   try {
     const session = await auth();
     if (!session?.user) {
-      return NextResponse.json(
-        { error: "احراز هویت لازم است" },
-        { status: 401 },
-      );
+      return NextResponse.json({ error: "احراز هویت لازم است" }, { status: 401 });
     }
 
     const formData = await request.formData();
@@ -255,30 +240,22 @@ export async function POST(request: Request) {
     const folder = (formData.get("folder") as string) || "misc";
 
     if (!(file instanceof File)) {
+      return NextResponse.json({ error: "فایلی ارسال نشده است" }, { status: 400 });
+    }
+
+    if (!ALLOWED_MEDIA_TYPES.includes(file.type)) {
       return NextResponse.json(
-        { error: "فایلی ارسال نشده است" },
-        { status: 400 },
+        { error: `فرمت فایل مجاز نیست. فرمت‌های مجاز: ${ALLOWED_MEDIA_TYPES.join(", ")}` },
+        { status: 400 }
       );
     }
 
-    // 🟢 بررسی می‌کنیم که فایل یا عکس باشد یا ویدئو
-    const isImage = ALLOWED_IMAGE_TYPES.includes(file.type);
-    const isVideo = ALLOWED_VIDEO_TYPES.includes(file.type);
-
-    if (!isImage && !isVideo) {
-      return NextResponse.json(
-        {
-          error: `فرمت فایل مجاز نیست. فرمت‌های تصویر و ویدئو پشتیبانی می‌شوند.`,
-        },
-        { status: 400 },
-      );
-    }
-
-    if (file.size > MAX_UPLOAD_SIZE_BYTES) {
-      const maxSizeMB = Math.round(MAX_UPLOAD_SIZE_BYTES / (1024 * 1024));
+    const maxSize = getMaxSizeForType(file.type);
+    if (file.size > maxSize) {
+      const maxSizeMB = Math.round(maxSize / (1024 * 1024));
       return NextResponse.json(
         { error: `حجم فایل نباید بیشتر از ${maxSizeMB} مگابایت باشد.` },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -292,22 +269,15 @@ export async function POST(request: Request) {
 
     if (!result.success) {
       console.error("[UPLOAD]", result.error);
-      return NextResponse.json(
-        { error: result.error ?? "خطا در آپلود فایل" },
-        { status: 500 },
-      );
+      return NextResponse.json({ error: result.error ?? "خطا در آپلود فایل" }, { status: 500 });
     }
 
-    return NextResponse.json({
-      success: true,
-      url: result.url,
-      key: result.key,
-    });
+    return NextResponse.json({ success: true, url: result.url, key: result.key });
   } catch (error) {
     console.error("[UPLOAD ERROR]", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "خطای داخلی سرور" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }
