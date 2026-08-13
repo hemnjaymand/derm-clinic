@@ -4,7 +4,14 @@ import { useState, useTransition } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
-import { X, Plus, Trash2, MapPin, Image as ImageIcon } from "lucide-react";
+import {
+  X,
+  Plus,
+  Trash2,
+  MapPin,
+  Image as ImageIcon,
+  Video,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,39 +21,9 @@ import {
 } from "../schemas/site-settings.schema";
 import { updateSiteSettingsAction } from "../actions/settings.actions";
 import { ImageUploadField } from "./image-upload-field";
+import Image from "next/image";
+import { VideoUploadField } from "./VideoUploadField";
 
-export type SiteSettings = {
-  clinicName: string;
-  address: string;
-  phone: string;
-  instagram: string;
-  email: string;
-  workingHours: string;
-  aboutText: string;
-  heroImageUrl: string;
-  bannerImages: string[];
-  licenseText: string;
-  latestArticles: { title: string; href: string }[];
-  latitude: string;
-  longitude: string;
-  mapZoom: number;
-  consultationTitle: string;
-  consultationSubtitle: string;
-  consultationButtonText: string;
-  consultationBackgroundImage: string;
-  featuresBackgroundImage: string;
-  videoTestimonialsBackgroundImage: string;
-  recentPatientsBackgroundImage: string;
-  brandsBackgroundImage: string;
-  // brands: Brand[];
-  // videoTestimonials: VideoTestimonial[];
-  // usefulLinks: UsefulLink[];
-  // features: Feature[];
-  // serviceDetail: ServiceDetail | null;
-  // serviceTags: ServiceTag[];
-  // recentShowcaseCases: ShowcaseCase[];
-  // pageBanners: PageBanners;
-};
 export function SettingsForm({
   initialData,
 }: {
@@ -581,8 +558,6 @@ export function SettingsForm({
               />
             </div>
           </section>
-
-          {/* ویدئو تستیمونیال‌ها */}
           <section className="space-y-4 rounded-xl border border-emerald-200/80 bg-emerald-50/30 p-5 shadow-sm transition-all hover:shadow-md">
             <div className="flex items-center justify-between border-b border-emerald-200/60 pb-4">
               <div>
@@ -597,7 +572,7 @@ export function SettingsForm({
                 type="button"
                 variant="outline"
                 size="sm"
-                className="h-8 text-xs bg-white border-emerald-200 hover:bg-emerald-100/70 hover:text-emerald-900"
+                className="h-8 bg-white text-xs border-emerald-200 hover:bg-emerald-100/70 hover:text-emerald-900"
                 onClick={() =>
                   appendVideo({
                     id: crypto.randomUUID(),
@@ -616,83 +591,162 @@ export function SettingsForm({
             </div>
 
             {videoFields.length === 0 && (
-              <p className="text-xs text-muted-foreground py-1">
+              <p className="py-1 text-xs text-muted-foreground">
                 هنوز ویدئویی اضافه نشده است.
               </p>
             )}
 
             <div className="space-y-4">
-              {videoFields.map((field, index) => (
-                <div
-                  key={field.id}
-                  className="space-y-3.5 rounded-lg border border-emerald-200/60 bg-white/80 p-4 transition-colors hover:bg-emerald-50/50"
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="flex-1 space-y-2">
+              {videoFields.map((field: any, index: number) => {
+                // خواندن مقادیر زنده فرم جهت نمایش پیش‌نمایش
+                const currentThumbnail = form.watch(
+                  `videoTestimonials.${index}.thumbnailImage`,
+                );
+                const currentVideoUrl = form.watch(
+                  `videoTestimonials.${index}.videoUrl`,
+                );
+
+                return (
+                  <div
+                    key={field.id}
+                    className="space-y-4 rounded-lg border border-emerald-200/60 bg-white/80 p-4 transition-colors hover:bg-emerald-50/50"
+                  >
+                    {/* بخش پیش‌نمایش تصویر و ویدئو (در صورت وجود) */}
+                    {(currentThumbnail || currentVideoUrl) && (
+                      <div className="grid gap-3 rounded-lg border border-emerald-100 bg-emerald-50/40 p-3 sm:grid-cols-2">
+                        {/* پیش‌نمایش Thumbnail */}
+                        <div className="space-y-1">
+                          <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-900">
+                            <ImageIcon className="h-3 w-3" /> پیش‌نمایش تصویر
+                            کاور:
+                          </span>
+                          <div className="relative aspect-video overflow-hidden rounded-md border border-emerald-200 bg-muted">
+                            {currentThumbnail ? (
+                              <Image
+                                src={currentThumbnail}
+                                alt="Thumbnail preview"
+                                fill
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
+                                بدون کاور
+                              </div>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* پیش‌نمایش ویدئو */}
+                        <div className="space-y-1">
+                          <span className="flex items-center gap-1 text-[11px] font-medium text-emerald-900">
+                            <Video className="h-3 w-3" /> پیش‌نمایش ویدئو:
+                          </span>
+                          <div className="relative aspect-video overflow-hidden rounded-md border border-emerald-200 bg-black">
+                            {currentVideoUrl ? (
+                              <video
+                                src={currentVideoUrl}
+                                controls
+                                className="h-full w-full object-cover"
+                              />
+                            ) : (
+                              <div className="flex h-full items-center justify-center text-xs text-white/60">
+                                بدون ویدئو
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* هدر آیتم و دکمه حذف */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex-1 space-y-2">
+                        <Input
+                          placeholder="نام مراجع"
+                          className="h-8 border-emerald-200 bg-white text-xs"
+                          {...form.register(`videoTestimonials.${index}.name`)}
+                        />
+                        <Input
+                          placeholder="توضیح کوتاه"
+                          className="h-8 border-emerald-200 bg-white text-xs"
+                          {...form.register(
+                            `videoTestimonials.${index}.description`,
+                          )}
+                        />
+                      </div>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 shrink-0 hover:bg-destructive/10"
+                        onClick={() => removeVideo(index)}
+                      >
+                        <Trash2 className="h-3.5 w-3.5 text-destructive" />
+                      </Button>
+                    </div>
+
+                    {/* ورودی‌های عدد و مدت زمان */}
+                    <div className="grid gap-3 sm:grid-cols-2">
                       <Input
-                        placeholder="نام مراجع"
-                        className="h-8 text-xs bg-white border-emerald-200"
-                        {...form.register(`videoTestimonials.${index}.name`)}
+                        type="number"
+                        min={1}
+                        max={5}
+                        dir="ltr"
+                        placeholder="امتیاز (۱ تا ۵)"
+                        className="h-8 border-emerald-200 bg-white font-mono text-xs"
+                        {...form.register(`videoTestimonials.${index}.rating`, {
+                          valueAsNumber: true,
+                        })}
                       />
                       <Input
-                        placeholder="توضیح کوتاه"
-                        className="h-8 text-xs bg-white border-emerald-200"
+                        dir="ltr"
+                        placeholder="مدت زمان (0:45)"
+                        className="h-8 border-emerald-200 bg-white font-mono text-xs"
                         {...form.register(
-                          `videoTestimonials.${index}.description`,
+                          `videoTestimonials.${index}.duration`,
                         )}
                       />
                     </div>
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 shrink-0 hover:bg-destructive/10"
-                      onClick={() => removeVideo(index)}
-                    >
-                      <Trash2 className="h-3.5 w-3.5 text-destructive" />
-                    </Button>
+
+                    {/* بخش آپلود فایل ویدئو و تصویر بندانگشتی */}
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {/* آپلود ویدئو */}
+                      <VideoUploadField
+                        label="فایل ویدئو"
+                        value={form.watch(
+                          `videoTestimonials.${index}.videoUrl`,
+                        )}
+                        onChange={(url: string) =>
+                          form.setValue(
+                            `videoTestimonials.${index}.videoUrl`,
+                            url,
+                            {
+                              shouldDirty: true,
+                            },
+                          )
+                        }
+                        folder="settings/videos"
+                      />
+
+                      {/* آپلود تصویر کاور */}
+                      <ImageUploadField
+                        label="تصویر بندانگشتی (Thumbnail)"
+                        value={form.watch(
+                          `videoTestimonials.${index}.thumbnailImage`,
+                        )}
+                        onChange={(url: string) =>
+                          form.setValue(
+                            `videoTestimonials.${index}.thumbnailImage`,
+                            url,
+                            { shouldDirty: true },
+                          )
+                        }
+                        folder="settings/testimonials"
+                      />
+                    </div>
                   </div>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <Input
-                      type="number"
-                      min={1}
-                      max={5}
-                      dir="ltr"
-                      placeholder="امتیاز (۱ تا ۵)"
-                      className="h-8 text-xs font-mono bg-white border-emerald-200"
-                      {...form.register(`videoTestimonials.${index}.rating`, {
-                        valueAsNumber: true,
-                      })}
-                    />
-                    <Input
-                      dir="ltr"
-                      placeholder="مدت زمان (0:45)"
-                      className="h-8 text-xs font-mono bg-white border-emerald-200"
-                      {...form.register(`videoTestimonials.${index}.duration`)}
-                    />
-                  </div>
-                  <Input
-                    dir="ltr"
-                    placeholder="آدرس ویدئو (اختیاری)"
-                    className="h-8 text-xs font-mono bg-white border-emerald-200"
-                    {...form.register(`videoTestimonials.${index}.videoUrl`)}
-                  />
-                  <ImageUploadField
-                    label="تصویر بندانگشتی (Thumbnail)"
-                    value={form.watch(
-                      `videoTestimonials.${index}.thumbnailImage`,
-                    )}
-                    onChange={(url) =>
-                      form.setValue(
-                        `videoTestimonials.${index}.thumbnailImage`,
-                        url,
-                        { shouldDirty: true },
-                      )
-                    }
-                    folder="settings/testimonials"
-                  />
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
 
