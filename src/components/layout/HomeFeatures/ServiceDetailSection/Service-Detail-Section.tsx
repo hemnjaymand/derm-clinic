@@ -14,7 +14,7 @@ export async function ServiceDetailSection() {
 
   return (
     <section className="relative w-full overflow-hidden py-12 md:py-20 bg-background">
-      {/* 🟢 تصویر پس‌زمینه: پوشش ۵۰٪ سمت راست در حالت دسکتاپ */}
+      {/*  تصویر پس‌زمینه: پوشش ۵۰٪ سمت راست در حالت دسکتاپ */}
       {backgroundImage && (
         <div className="absolute inset-y-0 right-0 w-full lg:w-1/2 z-0">
           <Image
@@ -29,7 +29,7 @@ export async function ServiceDetailSection() {
         </div>
       )}
 
-      {/* 🟢 تقسیم‌بندی ۵۰/۵۰ صفحه در RTL */}
+      {/*  تقسیم‌بندی ۵۰/۵۰ صفحه در RTL */}
       <div className="container relative z-10 mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* ستون راست (خالی برای نمایش تصویر پس‌زمینه) */}

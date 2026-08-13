@@ -52,7 +52,7 @@ export function ServiceDetailSectionClient({
       </div>
 
       {/* توضیحات خدمت */}
-      <div className="space-y-3">
+      <div className="space-y-2">
         <h3 className="text-xl font-bold text-primary">{service.title}</h3>
         <p className="text-sm leading-relaxed text-muted-foreground">
           {service.description}
@@ -60,9 +60,9 @@ export function ServiceDetailSectionClient({
 
         <Link
           href={service.ctaLink}
-          className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-xs font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:scale-[1.02]"
+          className="inline-flex items-center gap-2 rounded-full bg-primary/30 px-5 py-2 text-xs font-medium text-primary-foreground transition-all hover:bg-primary/40 hover:scale-[1.02]"
         >
-          جهت دریافت اطلاعات بیشتر ... بخوانید ...
+           دریافت اطلاعات بیشتر   ...
           <ArrowLeft className="h-3.5 w-3.5" />
         </Link>
       </div>
@@ -72,7 +72,7 @@ export function ServiceDetailSectionClient({
         {specs.map((spec, index) => (
           <div
             key={index}
-            className="rounded-xl border border-border bg-card p-3 text-center transition hover:shadow-md"
+            className="rounded-xl border border-border bg-card/30 p-3 text-center transition hover:shadow-md"
           >
             <spec.icon className="mx-auto mb-1.5 h-5 w-5 text-primary" />
             <p className="text-[11px] text-muted-foreground">{spec.label}</p>
