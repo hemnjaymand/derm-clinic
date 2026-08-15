@@ -1,61 +1,36 @@
 "use client";
 
 import { useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { loginSchema, type LoginInput } from "../schemas/login.schema";
-import { loginAction } from "../actions/login.action";
 import { signIn } from "next-auth/react";
 export function LoginForm() {
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { phone: "", password: "" },
+    defaultValues: { phone: "09120000000", password: "ChangeMe123!" },
   });
 
-  // function onSubmit(values: LoginInput) {
-  //   startTransition(async () => {
-  //     try {
-  //       const formData = new FormData();
-  //       formData.append("phone", values.phone);
-  //       formData.append("password", values.password);
+  function onSubmit(values: LoginInput) {
+    startTransition(async () => {
+      const result = await signIn("credentials", {
+        phone: values.phone,
+        password: values.password,
+        redirect: false,
+      });
 
-  //       const result = await loginAction(formData);
-
-  //       if (result.success) {
-  //         // ✅ به‌جای router.push از window.location.href استفاده کن
-  //         window.location.href = "/dashboard";
-  //       } else {
-  //         toast.error(result.error);
-  //       }
-  //     } catch {
-  //       toast.error("خطایی در ورود رخ داد. دوباره تلاش کنید.");
-  //     }
-  //   });
-  // }
-
-
-function onSubmit(values: LoginInput) {
-  startTransition(async () => {
-    const result = await signIn("credentials", {
-      phone: values.phone,
-      password: values.password,
-      redirect: false,
+      if (result?.error) {
+        toast.error("شماره موبایل یا رمز عبور اشتباه است");
+      } else {
+        window.location.href = "/dashboard";
+      }
     });
-
-    if (result?.error) {
-      toast.error("شماره موبایل یا رمز عبور اشتباه است");
-    } else {
-      window.location.href = "/dashboard";
-    }
-  });
-}
+  }
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
